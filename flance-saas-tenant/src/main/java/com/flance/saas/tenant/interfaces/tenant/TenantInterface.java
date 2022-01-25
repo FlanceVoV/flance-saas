@@ -1,6 +1,5 @@
 package com.flance.saas.tenant.interfaces.tenant;
 
-import com.flance.saas.db.annotation.Table;
 import com.flance.saas.db.tables.ITable;
 import com.flance.saas.db.tables.common.Schema;
 import com.flance.saas.tenant.domain.tenant.domain.TenantDomain;
@@ -11,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class TenantInterface {
@@ -21,23 +21,28 @@ public class TenantInterface {
     @Resource
     TenantService tenantService;
 
-    public void testCreateSchema(String schemaName) {
+    /**
+     * 创建表空间
+     * @param schemaName    表空间名称
+     * @return  返回表空间实例，可用于业务保存
+     */
+    public Schema createTenantSchema(String schemaName) {
         Schema schema = new Schema();
+        schema.setSchemaName(schemaName);
+        schema.setSchemaUniqueCode(UUID.randomUUID().toString());
         schema.createSchema(jdbcTemplate, schemaName);
+        return schema;
     }
 
-    public void testCreateNewTenant(Tenant tenant) {
-        TenantDomain tenantDomain = TenantDomain.builder().tenant(tenant).tenantService(tenantService).build();
-        List<ITable> list = tenant.getTables();
+    public void createTenant(Tenant tenant) {
+        TenantDomain tenantDomain = TenantDomain.builder().tenantService(tenantService).tenant(tenant).build();
         tenantDomain.create();
-        testCreateSchema(tenant.getTenantSchema());
-        list.forEach(item -> item.createTable(jdbcTemplate, tenant.getTenantSchema(), tenant.getTenantSuffix()));
-
     }
 
-    public List<Tenant> testList(Tenant tenant) {
-        TenantDomain tenantDomain = TenantDomain.builder().tenant(tenant).tenantService(tenantService).build();
-        return tenantDomain.list();
+    public Tenant getById(Tenant tenant) {
+        TenantDomain tenantDomain = TenantDomain.builder().tenantService(tenantService).tenant(tenant).build();
+        return tenantDomain.getById();
     }
+
 
 }

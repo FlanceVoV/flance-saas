@@ -43,7 +43,7 @@ public class TestHandler implements IHandler {
         tenant.setCreateDate(new Date());
         tenant.setCreateUserId("system_01");
         tenant.setStatus(0);
-        tenantInterface.testCreateNewTenant(tenant);
+//        tenantInterface.testCreateNewTenant(tenant);
 
     }
 }

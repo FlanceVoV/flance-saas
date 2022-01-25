@@ -1,13 +1,19 @@
 package com.flance.saas.db.tables.common;
 
 import com.flance.saas.db.utils.SqlUtils;
+import lombok.Data;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 /**
  * 表空间
  * @author jhf
  */
+@Data
 public class Schema {
+
+    private String schemaName;
+
+    private String schemaUniqueCode;
 
     public void createSchema(JdbcTemplate jdbcTemplate, String schema) {
         if (SqlUtils.checkSchema(schema)) {

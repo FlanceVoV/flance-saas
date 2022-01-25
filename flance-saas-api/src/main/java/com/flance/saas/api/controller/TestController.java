@@ -23,11 +23,11 @@ public class TestController {
         return "au-test";
     }
 
-    @GetMapping("/list")
-    public List<Tenant> list() {
-        Tenant tenant = new Tenant();
-        BaseLogin baseLogin = TokenUtil.getLoginModel();
-        return tenantInterface.testList(tenant);
-    }
+//    @GetMapping("/list")
+//    public List<Tenant> list() {
+//        Tenant tenant = new Tenant();
+//        BaseLogin baseLogin = TokenUtil.getLoginModel();
+//        return tenantInterface.testList(tenant);
+//    }
 
 }
