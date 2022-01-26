@@ -7,6 +7,7 @@ import com.flance.saas.db.annotation.Index;
 import com.flance.saas.db.annotation.Table;
 import com.flance.saas.db.tables.ITable;
 import com.flance.saas.db.tables.common.BaseTable;
+import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -69,9 +70,57 @@ public class Tenant extends BaseTable {
     private String tenantSuffix;
 
     /**
+     * 租户表实例，开通的业务表
+     */
+    @Column(notNull = true, length = "2000")
+    private String openTables;
+
+    /**
+     * 是否启用
+     * 1.启用 0.禁用
+     */
+    @Column(notNull = true)
+    private Integer enabled;
+
+    /**
      * 租户所拥有的业务表实例
      */
     @TableField(exist = false)
     private List<ITable> tables;
 
+    /**
+     * 租户所拥有的业务表代码
+     */
+    @TableField(exist = false)
+    private List<String> tableNames;
+
+    /**
+     * 获取业务表实例
+     */
+    public List<ITable> getTables() {
+        List<ITable> tables = Lists.newArrayList();
+        if (null != openTables) {
+            List<String> tableEntityNames = Lists.newArrayList(openTables.split(","));
+            tableEntityNames.forEach(entityName -> {
+                try {
+                    ITable table = (ITable) Class.forName(entityName).newInstance();
+                    tables.add(table);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        return tables;
+    }
+
+    /**
+     * 获取所有业务表
+     */
+    public List<String> getTableNames() {
+        List<String> tableNames = Lists.newArrayList();
+        if (null != openTables) {
+            tableNames = Lists.newArrayList(openTables.split(","));
+        }
+        return tableNames;
+    }
 }

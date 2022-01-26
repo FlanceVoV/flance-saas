@@ -8,7 +8,7 @@ public class LogUtil {
 
     public static void putLog(String logId) {
         ThreadLocalHelper.put(LOG_ID, logId);
-        RequestUtil.setRequestId(logId);
+        RequestUtil.setLogId(logId);
     }
 
     public static String getLogId() {

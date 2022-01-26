@@ -1,7 +1,6 @@
 package com.flance.saas.common.utils;
 
 import com.flance.saas.common.core.ThreadLocalModel;
-import com.flance.saas.common.login.BaseLogin;
 import com.google.common.collect.Maps;
 
 import java.util.Map;

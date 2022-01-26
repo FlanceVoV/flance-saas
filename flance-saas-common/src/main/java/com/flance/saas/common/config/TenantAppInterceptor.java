@@ -1,10 +1,10 @@
 package com.flance.saas.common.config;
 
-import com.flance.saas.common.login.BaseLogin;
+import com.flance.saas.common.login.TenantChooseModel;
 import com.flance.saas.common.utils.LogUtil;
-import com.flance.saas.common.utils.TokenUtil;
+import com.flance.saas.common.utils.TenantChooseUtil;
+import com.flance.web.utils.GsonUtils;
 import com.flance.web.utils.RedisUtils;
-import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,14 +12,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.UUID;
 
 /**
- * 登录拦截器
+ * 租户应用拦截器
  * @author jhf
  */
 @Component
-public class LoginInterceptor implements HandlerInterceptor {
+public class TenantAppInterceptor implements HandlerInterceptor {
 
     @Resource
     RedisUtils redisUtils;
@@ -38,8 +37,8 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (null == userInfo) {
             return false;
         }
-        Gson gson = new Gson();
-        TokenUtil.putLogin(gson.fromJson(userInfo, BaseLogin.class));
+
+        TenantChooseUtil.putLogin(GsonUtils.fromString(userInfo, TenantChooseModel.class));
         return true;
     }
 
@@ -57,7 +56,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             e.printStackTrace();
         } finally {
             LogUtil.removeLogId();
-            TokenUtil.removeLogin();
+            TenantChooseUtil.removeLogin();
         }
     }
 }

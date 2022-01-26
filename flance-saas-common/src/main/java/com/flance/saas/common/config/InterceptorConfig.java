@@ -8,19 +8,17 @@ import javax.annotation.Resource;
 
 /**
  * 拦截器配置
- * au - 需要认证
- * nau - 不需要认证
  * @author jhf
  */
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
     @Resource
-    LoginInterceptor loginInterceptor;
+    TenantAppInterceptor tenantAppInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/au/**");
+        registry.addInterceptor(tenantAppInterceptor).addPathPatterns("/tenant-app/**");
     }
 
 }

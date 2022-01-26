@@ -77,7 +77,7 @@ public class TenantDomain {
      * 根据主键查询
      * @return  返回tenant实例
      */
-    public Tenant getById() {
+    public Tenant get() {
         LambdaQueryWrapper<Tenant> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         AssertUtil.notEmpty(tenant.getId(), AssertException.getNormal("唯一标识查询条件[id]不允许为空", "-1"));
         lambdaQueryWrapper.eq(Tenant::getId, tenant.getId());

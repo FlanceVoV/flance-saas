@@ -3,7 +3,7 @@ package com.flance.saas.api.init.handlers;
 import com.flance.saas.db.interfaces.TableInterface;
 import com.flance.saas.db.tables.ITable;
 import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
-import com.flance.saas.tenant.domain.user.domain.entity.User;
+import com.flance.saas.tenant.domain.user.domain.entity.SysUserEntity;
 import com.flance.saas.tenant.interfaces.tenant.TenantInterface;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Component;
@@ -28,8 +28,8 @@ public class TestHandler implements IHandler {
 
 
         Tenant tenant = new Tenant();
-        User user = new User();
-        List<ITable> iTables = Lists.newArrayList(tenant, user);
+        SysUserEntity sysUserEntity = new SysUserEntity();
+        List<ITable> iTables = Lists.newArrayList(tenant, sysUserEntity);
 
         tenant.setId(tenant.createId());
         tenant.setTenantId("201");

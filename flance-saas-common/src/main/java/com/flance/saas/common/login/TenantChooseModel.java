@@ -3,7 +3,7 @@ package com.flance.saas.common.login;
 import lombok.Data;
 
 @Data
-public class BaseLogin {
+public class TenantChooseModel {
 
     private String userId;
 

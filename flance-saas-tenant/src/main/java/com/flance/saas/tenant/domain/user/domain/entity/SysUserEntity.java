@@ -1,34 +1,38 @@
 package com.flance.saas.tenant.domain.user.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.flance.saas.db.annotation.Column;
 import com.flance.saas.db.annotation.Index;
 import com.flance.saas.db.annotation.Table;
 import com.flance.saas.db.tables.common.BaseTable;
-import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
+import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
+import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
+
 /**
- * 用户
+ * 系统用户
+ * 指：saas平台的系统管理后台运维账户
  * @author jhf
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(tableName = "sys_flance_saas_user", indexes = {
-        @Index(columns = {"login_name"}, indexName = "un_login_name", indexType = Index.IndexType.UNIQUE),
+        @Index(columns = {"user_account"}, indexName = "un_user_account", indexType = Index.IndexType.UNIQUE),
         @Index(columns = {"user_name"}, indexName = "idx_user_name")
 })
 @TableName("sys_flance_saas_user")
-public class User extends BaseTable {
+public class SysUserEntity extends BaseTable {
 
     /**
      * 登录名
      */
     @Column(notNull = true)
-    private String loginName;
+    private String userAccount;
 
     /**
      * 用户名
@@ -37,14 +41,22 @@ public class User extends BaseTable {
     private String userName;
 
     /**
+     * 用户手机号
+     */
+    @Column(notNull = true)
+    private String userPhone;
+
+    /**
      * 密码
      */
     @Column(notNull = true)
-    private String password;
+    private String userPassword;
 
-    /**
-     * 用户所有的租户（应用）
-     */
-    private List<Tenant> tenants;
+    @TableField(exist = false)
+    private List<MenuEntity> userMenus;
+
+    @TableField(exist = false)
+    private List<RoleEntity> userRoles;
+
 
 }
