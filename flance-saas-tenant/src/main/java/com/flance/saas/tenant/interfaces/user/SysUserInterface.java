@@ -4,6 +4,7 @@ import com.flance.saas.tenant.domain.user.domain.SysUserDomain;
 import com.flance.saas.tenant.domain.user.domain.entity.SysUserEntity;
 import com.flance.saas.tenant.domain.user.domain.vo.LoginUserSys;
 import com.flance.saas.tenant.domain.user.service.SysUserService;
+import com.flance.saas.tenant.infrastructure.LoginUtil;
 import com.flance.saas.tenant.infrastructure.SaasConstant;
 import com.flance.web.utils.GsonUtils;
 import com.flance.web.utils.RedisUtils;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 系统用户服务
@@ -43,12 +45,9 @@ public class SysUserInterface {
                 .build();
         LoginUserSys loginUserSys = sysUserDomain.login();
         String userInfo = GsonUtils.toJSONString(loginUserSys);
-        String key = SaasConstant.SAAS_SYS_LOGIN_TOKEN_KEY + loginUserSys.getToken();
-        if (redisUtils.hasKey(key)) {
-            redisUtils.setExp(key, SaasConstant.SAAS_USER_EXP_TIME);
-            return loginUserSys;
-        }
-        redisUtils.add(key, userInfo, SaasConstant.SAAS_USER_EXP_TIME);
+        String key = SaasConstant.SAAS_SYS_LOGIN_TOKEN_KEY + loginUserSys.getUserId();
+        LoginUtil.loginSet(key, redisUtils);
+        redisUtils.add(key + ":" + loginUserSys.getToken(), userInfo, SaasConstant.SAAS_USER_EXP_TIME);
         return loginUserSys;
     }
 

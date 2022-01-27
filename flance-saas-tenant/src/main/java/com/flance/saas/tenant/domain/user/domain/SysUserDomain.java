@@ -1,5 +1,6 @@
 package com.flance.saas.tenant.domain.user.domain;
 
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.flance.saas.tenant.domain.user.domain.entity.SysUserEntity;
@@ -7,6 +8,7 @@ import com.flance.saas.tenant.domain.user.domain.vo.LoginUserSys;
 import com.flance.saas.tenant.domain.user.service.SysUserService;
 import com.flance.web.utils.AssertException;
 import com.flance.web.utils.AssertUtil;
+import com.flance.web.utils.SnowFlakeUtil;
 import com.flance.web.utils.web.request.PageRequest;
 import com.flance.web.utils.web.response.PageResponse;
 import lombok.Builder;
@@ -37,6 +39,9 @@ public class SysUserDomain {
      * 新增用户
      */
     public void create() {
+        String encode = sysUserService.encodePassword(sysUserEntity.getUserAccount(), sysUserEntity.getUserPassword());
+        sysUserEntity.setId(IdUtil.randomUUID());
+        sysUserEntity.setUserPassword(encode);
         sysUserService.save(sysUserEntity);
     }
 
@@ -91,8 +96,10 @@ public class SysUserDomain {
         SysUserEntity logon = sysUserService.login(sysUserEntity.getUserAccount(), sysUserEntity.getUserPassword());
         sysUserService.setUserMenu(logon);
         sysUserService.setUserMenu(logon);
+        String token = IdUtil.fastSimpleUUID();
         return LoginUserSys.builder()
-                .token(logon.getId())
+                .userId(logon.getId())
+                .token(token)
                 .userName(logon.getUserName())
                 .userAccount(logon.getUserAccount())
                 .userMenus(logon.getUserMenus())

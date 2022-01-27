@@ -1,5 +1,7 @@
 package com.flance.saas.tenant.domain.user.domain;
 
+import com.flance.saas.tenant.domain.user.domain.entity.AppUserEntity;
+import com.flance.saas.tenant.domain.user.domain.vo.LoginUserApp;
 import com.flance.saas.tenant.domain.user.service.AppUserService;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +15,11 @@ public class AppUserDomain {
     private AppUserService appUserService;
 
     @NonNull
-    private AppUserDomain appUserDomain;
+    private AppUserEntity appUserEntity;
+
+    public LoginUserApp login() {
+
+        return null;
+    }
 
 }

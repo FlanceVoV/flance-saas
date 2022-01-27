@@ -11,6 +11,8 @@ import java.util.List;
 @Builder
 public class LoginUserSys {
 
+    private String userId;
+
     private String token;
 
     private String userAccount;

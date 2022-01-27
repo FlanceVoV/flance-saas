@@ -7,6 +7,9 @@ import lombok.Data;
 @Builder
 public class LoginUserMerchant {
 
+    private String userId;
+
+    private String token;
 
 
 }

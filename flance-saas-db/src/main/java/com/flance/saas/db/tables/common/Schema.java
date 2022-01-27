@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * @author jhf
  */
 @Data
+@Deprecated
 public class Schema {
 
     private String schemaName;

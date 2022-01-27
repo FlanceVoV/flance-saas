@@ -48,4 +48,9 @@ public class SysUserServiceImpl extends BaseService<String, SysUserMapper, SysUs
     public void setUserRole(SysUserEntity sysUserEntity) {
 
     }
+
+    @Override
+    public String encodePassword(String userAccount, String userPassword) {
+        return passwordEncoder.encode(userAccount + userPassword);
+    }
 }

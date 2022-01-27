@@ -1,14 +1,14 @@
 package com.flance.saas.tenant.interfaces.tenant;
 
-import com.flance.saas.db.tables.common.Schema;
+import com.flance.saas.tenant.domain.table.domain.SchemaDomain;
+import com.flance.saas.tenant.domain.table.domain.entity.SchemaEntity;
+import com.flance.saas.tenant.domain.table.service.SchemaService;
 import com.flance.saas.tenant.domain.tenant.domain.TenantDomain;
 import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
 import com.flance.saas.tenant.domain.tenant.service.TenantService;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.UUID;
 
 /**
  * 业务流程
@@ -36,22 +36,21 @@ import java.util.UUID;
 public class TenantInterface {
 
     @Resource
-    JdbcTemplate jdbcTemplate;
+    SchemaService schemaService;
 
     @Resource
     TenantService tenantService;
 
     /**
      * 创建表空间
-     * @param schemaName    表空间名称
-     * @return  返回表空间实例，可用于业务保存
+     * @param schemaEntity    实例
      */
-    public Schema createTenantSchema(String schemaName) {
-        Schema schema = new Schema();
-        schema.setSchemaName(schemaName);
-        schema.setSchemaUniqueCode(UUID.randomUUID().toString());
-        schema.createSchema(jdbcTemplate, schemaName);
-        return schema;
+    public void createTenantSchema(SchemaEntity schemaEntity) {
+        SchemaDomain schemaDomain = SchemaDomain.builder()
+                .schemaEntity(schemaEntity)
+                .schemaService(schemaService)
+                .build();
+        schemaDomain.createSchema();
     }
 
     /**
