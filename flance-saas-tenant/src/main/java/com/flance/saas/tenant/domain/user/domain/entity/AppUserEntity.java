@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.flance.saas.db.annotation.Column;
 import com.flance.saas.db.tables.common.BaseTable;
+import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
 import com.flance.saas.tenant.domain.tenant.domain.entity.TenantAppUser;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -75,6 +76,6 @@ public class AppUserEntity extends BaseTable {
      * 商户应用
      */
     @TableField(exist = false)
-    private List<TenantAppUser> appTenant;
+    private List<Tenant> appTenant;
 
 }

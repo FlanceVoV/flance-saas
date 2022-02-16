@@ -111,7 +111,7 @@ public class SysUserInterface {
         SysUserDomain sysUserDomain = SysUserDomain.builder()
                 .sysUserService(sysUserService)
                 .build();
-        return sysUserDomain.page(pageRequest);
+        return sysUserDomain.page(pageRequest, "EQ_status", "LIKE_userName");
     }
 
     /**

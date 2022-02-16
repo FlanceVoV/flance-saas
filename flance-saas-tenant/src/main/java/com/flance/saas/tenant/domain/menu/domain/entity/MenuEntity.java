@@ -9,6 +9,8 @@ import com.flance.saas.db.tables.common.BaseTable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(tableName = "sys_flance_saas_menu", indexes = {
@@ -55,6 +57,6 @@ public class MenuEntity extends BaseTable {
     private String tenantId;
 
     @TableField(exist = false)
-    private MenuEntity parentMenu;
+    private List<MenuEntity> children;
 
 }
