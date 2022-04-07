@@ -1,7 +1,10 @@
 package com.flance.saas.common.config;
 
+import com.flance.saas.common.core.SaasConstant;
+import com.flance.saas.common.core.TenantCacheModel;
 import com.flance.saas.common.login.TenantChooseModel;
 import com.flance.saas.common.utils.LogUtil;
+import com.flance.saas.common.utils.LoginUtil;
 import com.flance.saas.common.utils.TenantChooseUtil;
 import com.flance.web.utils.GsonUtils;
 import com.flance.web.utils.RedisUtils;
@@ -26,19 +29,33 @@ public class TenantAppInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader("token");
-        token = "test";
-        if (null == token) {
-            return false;
-        }
-        String userInfo = redisUtils.get(token);
-//        userInfo = "{\"tenantId\":\"201\",\"tenantSchema\":\"flance_schema_test\",\"tenantSuffix\":\"01\"}";
-        userInfo = "{\"tenantId\":\"201\"}";
+        String userId = request.getHeader("userId");
+        String tenantId = request.getHeader("tenantId");
+        String key = SaasConstant.SYS_TOKEN_KEY + userId;
+        String userInfo = redisUtils.get(key + ":" + token);
+
         // 租户表权限校验 tenant.getTables;
         if (null == userInfo) {
             return false;
         }
+        LoginUtil.putLogin(userInfo);
 
-        TenantChooseUtil.putLogin(GsonUtils.fromString(userInfo, TenantChooseModel.class));
+        String tenantCache = redisUtils.get(SaasConstant.SYS_TENANT_KEY + tenantId);
+        if (null == tenantCache) {
+            return true;
+        }
+        TenantCacheModel tenantCacheModel = GsonUtils.fromString(tenantCache, TenantCacheModel.class);
+
+        TenantChooseModel tenantChooseModel = new TenantChooseModel();
+        tenantChooseModel.setTenantId(tenantId);
+        tenantChooseModel.setUserId(userId);
+        tenantChooseModel.setToken(token);
+        tenantChooseModel.setTenantSchema(tenantCacheModel.getTenantSchema());
+        tenantChooseModel.setTenantSuffix(tenantCacheModel.getTenantSuffix());
+        tenantChooseModel.setTables(tenantCacheModel.getTables());
+
+
+        TenantChooseUtil.putTenantLogin(tenantChooseModel);
         return true;
     }
 
@@ -56,7 +73,8 @@ public class TenantAppInterceptor implements HandlerInterceptor {
             e.printStackTrace();
         } finally {
             LogUtil.removeLogId();
-            TenantChooseUtil.removeLogin();
+            LoginUtil.removeLogin();
+            TenantChooseUtil.removeTenantLogin();
         }
     }
 }

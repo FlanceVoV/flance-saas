@@ -56,6 +56,9 @@ public class MenuEntity extends BaseTable {
     @Column(notNull = true)
     private String tenantId;
 
+    @Column(notNull = true)
+    private Integer sort;
+
     @TableField(exist = false)
     private List<MenuEntity> children;
 

@@ -6,16 +6,16 @@ import static com.flance.saas.common.utils.ThreadLocalHelper.*;
 
 public class TenantChooseUtil {
 
-    public static void putLogin(TenantChooseModel tenantChooseModel) {
-        ThreadLocalHelper.put(LOGIN_MODEL, tenantChooseModel);
+    public static void putTenantLogin(TenantChooseModel tenantChooseModel) {
+        ThreadLocalHelper.put(TENANT_LOGIN_MODEL, tenantChooseModel);
     }
 
-    public static TenantChooseModel getLoginModel() {
-        return ThreadLocalHelper.get(LOGIN_MODEL);
+    public static TenantChooseModel getTenantLoginModel() {
+        return ThreadLocalHelper.get(TENANT_LOGIN_MODEL);
     }
 
-    public static void removeLogin() {
-        ThreadLocalHelper.remove(LOGIN_MODEL);
+    public static void removeTenantLogin() {
+        ThreadLocalHelper.remove(TENANT_LOGIN_MODEL);
     }
 
 

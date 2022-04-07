@@ -1,8 +1,7 @@
 package com.flance.saas.tenant.domain.user.domain;
 
 import com.flance.saas.tenant.domain.user.domain.entity.MerchantUserEntity;
-import com.flance.saas.tenant.domain.user.domain.vo.LoginUserApp;
-import com.flance.saas.tenant.domain.user.domain.vo.LoginUserMerchant;
+import com.flance.saas.tenant.domain.user.domain.vo.LoginUser;
 import com.flance.saas.tenant.domain.user.service.MerchantUserService;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +17,7 @@ public class MerchantUserDomain {
     @NonNull
     private MerchantUserEntity merchantUserEntity;
 
-    public LoginUserMerchant login() {
+    public LoginUser login() {
 
         return null;
     }

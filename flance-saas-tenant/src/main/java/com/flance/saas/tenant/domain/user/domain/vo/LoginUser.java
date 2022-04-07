@@ -9,11 +9,13 @@ import java.util.List;
 
 @Data
 @Builder
-public class LoginUserSys {
+public class LoginUser {
 
     private String userId;
 
     private String token;
+
+    private String userType;
 
     private String userAccount;
 

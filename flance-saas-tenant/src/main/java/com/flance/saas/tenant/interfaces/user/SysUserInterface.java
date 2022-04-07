@@ -2,10 +2,10 @@ package com.flance.saas.tenant.interfaces.user;
 
 import com.flance.saas.tenant.domain.user.domain.SysUserDomain;
 import com.flance.saas.tenant.domain.user.domain.entity.SysUserEntity;
-import com.flance.saas.tenant.domain.user.domain.vo.LoginUserSys;
+import com.flance.saas.tenant.domain.user.domain.vo.LoginUser;
 import com.flance.saas.tenant.domain.user.service.SysUserService;
 import com.flance.saas.tenant.infrastructure.LoginUtil;
-import com.flance.saas.tenant.infrastructure.SaasConstant;
+import com.flance.saas.common.core.SaasConstant;
 import com.flance.web.utils.GsonUtils;
 import com.flance.web.utils.RedisUtils;
 import com.flance.web.utils.web.request.PageRequest;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 系统用户服务
@@ -35,7 +34,7 @@ public class SysUserInterface {
      * @param userPassword  密码.md5
      * @return              返回用户信息
      */
-    public LoginUserSys login(String userAccount, String userPassword) {
+    public LoginUser login(String userAccount, String userPassword) {
         SysUserEntity sysUserEntity = new SysUserEntity();
         sysUserEntity.setUserAccount(userAccount);
         sysUserEntity.setUserPassword(userPassword);
@@ -43,12 +42,13 @@ public class SysUserInterface {
                 .sysUserEntity(sysUserEntity)
                 .sysUserService(sysUserService)
                 .build();
-        LoginUserSys loginUserSys = sysUserDomain.login();
-        String userInfo = GsonUtils.toJSONString(loginUserSys);
-        String key = SaasConstant.SAAS_SYS_LOGIN_TOKEN_KEY + loginUserSys.getUserId();
+        LoginUser loginUser = sysUserDomain.login();
+        loginUser.setUserType("sys");
+        String userInfo = GsonUtils.toJSONString(loginUser);
+        String key = SaasConstant.SYS_TOKEN_KEY + loginUser.getUserId();
         LoginUtil.loginSet(key, redisUtils);
-        redisUtils.add(key + ":" + loginUserSys.getToken(), userInfo, SaasConstant.SAAS_USER_EXP_TIME);
-        return loginUserSys;
+        redisUtils.add(key + ":" + loginUser.getToken(), userInfo, SaasConstant.SAAS_USER_EXP_TIME);
+        return loginUser;
     }
 
     /**

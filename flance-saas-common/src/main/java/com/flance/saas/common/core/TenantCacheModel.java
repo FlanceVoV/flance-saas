@@ -1,15 +1,11 @@
-package com.flance.saas.common.login;
+package com.flance.saas.common.core;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class TenantChooseModel {
-
-    private String userId;
-
-    private String token;
+public class TenantCacheModel {
 
     private String tenantId;
 

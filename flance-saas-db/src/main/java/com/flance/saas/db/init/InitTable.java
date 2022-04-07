@@ -2,10 +2,17 @@ package com.flance.saas.db.init;
 
 import com.flance.saas.db.tables.common.BaseTable;
 import com.flance.saas.db.utils.ClassUtils;
+import com.flance.web.utils.GsonUtils;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 初始化所有表

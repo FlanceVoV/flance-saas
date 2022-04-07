@@ -8,12 +8,14 @@ import java.util.Map;
 
 public class ThreadLocalHelper {
 
+    public static final String TENANT_LOGIN_MODEL = "tenant-login-model";
     public static final String LOGIN_MODEL = "login-model";
     public static final String LOG_ID = "log-id";
 
     private final static Map<String, ThreadLocalModel> THREAD_LOCAL_MODEL_MAP = Maps.newConcurrentMap();
 
     static {
+        THREAD_LOCAL_MODEL_MAP.put(TENANT_LOGIN_MODEL, ThreadLocalModel.create());
         THREAD_LOCAL_MODEL_MAP.put(LOGIN_MODEL, ThreadLocalModel.create());
         THREAD_LOCAL_MODEL_MAP.put(LOG_ID, ThreadLocalModel.create());
     }

@@ -1,6 +1,12 @@
-package com.flance.saas.tenant.infrastructure;
+package com.flance.saas.common.core;
 
 public interface SaasConstant {
+
+    String SYS_TOKEN_KEY = "sys:user:token:";
+
+    String SYS_TENANT_KEY = "sys:tenant:";
+
+    String SYS_TABLES_COMMON = "sys:tables:common:";
 
     /**
      * saas 系统 登录 token key 前缀
