@@ -44,6 +44,9 @@ public abstract class BaseTable implements ITable, IEntity<String> {
     protected Integer status;
 
     @TableField(exist = false)
+    protected List<String> ids;
+
+    @TableField(exist = false)
     private String pkColumn;
 
     @Override

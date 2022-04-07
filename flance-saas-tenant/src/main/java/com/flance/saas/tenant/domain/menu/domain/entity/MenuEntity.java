@@ -6,6 +6,7 @@ import com.flance.saas.db.annotation.Column;
 import com.flance.saas.db.annotation.Index;
 import com.flance.saas.db.annotation.Table;
 import com.flance.saas.db.tables.common.BaseTable;
+import com.flance.web.utils.TreeModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -22,7 +23,7 @@ import java.util.List;
         @Index(columns = {"tenant_id"}, indexName = "idx_tenant_id"),
 })
 @TableName("sys_flance_saas_menu")
-public class MenuEntity extends BaseTable {
+public class MenuEntity extends BaseTable implements TreeModel<MenuEntity, String> {
 
     @Column(notNull = true)
     private String menuCode;
