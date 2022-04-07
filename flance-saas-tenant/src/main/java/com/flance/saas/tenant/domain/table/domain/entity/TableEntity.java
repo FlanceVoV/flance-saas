@@ -1,6 +1,7 @@
 package com.flance.saas.tenant.domain.table.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.flance.saas.db.annotation.Column;
 import com.flance.saas.db.annotation.Index;
 import com.flance.saas.db.annotation.Table;
 import com.flance.saas.db.tables.common.BaseTable;
@@ -24,16 +25,19 @@ public class TableEntity extends BaseTable {
     /**
      * 表名 唯一索引 表的业务名，不带schema和后缀
      */
+    @Column(notNull = true)
     private String tableName;
 
     /**
      * 表备注、说明
      */
+    @Column(notNull = true)
     private String tableRemark;
 
     /**
      * 是否开放 1.开启 0.禁用
      */
+    @Column(notNull = true)
     private Integer enabled;
 
 }

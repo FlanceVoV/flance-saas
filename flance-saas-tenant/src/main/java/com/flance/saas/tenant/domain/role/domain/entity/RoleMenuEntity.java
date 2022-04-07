@@ -1,6 +1,7 @@
 package com.flance.saas.tenant.domain.role.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.flance.saas.db.annotation.Column;
 import com.flance.saas.db.annotation.Index;
 import com.flance.saas.db.annotation.Table;
 import com.flance.saas.db.tables.common.BaseTable;
@@ -10,13 +11,15 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(tableName = "sys_flance_saas_role_menu", indexes = {
-        @Index(columns = {"role_id, menu_id"}, indexName = "un_role_menu_id", indexType = Index.IndexType.UNIQUE),
+        @Index(columns = {"role_id", "menu_id"}, indexName = "un_role_menu_id", indexType = Index.IndexType.UNIQUE),
 })
 @TableName("sys_flance_saas_role_menu")
 public class RoleMenuEntity extends BaseTable {
 
+    @Column(notNull = true)
     private String roleId;
 
+    @Column(notNull = true)
     private String menuId;
 
 }
