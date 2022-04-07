@@ -3,6 +3,7 @@ package com.flance.saas.tenant.domain.user.domain.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.flance.saas.db.annotation.Column;
+import com.flance.saas.db.annotation.Table;
 import com.flance.saas.db.tables.common.BaseTable;
 import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
 import com.flance.saas.tenant.domain.tenant.domain.entity.TenantMerchantUser;
@@ -19,6 +20,7 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_flance_saas_merchant_user")
+@Table(tableName = "sys_flance_saas_merchant_user")
 public class MerchantUserEntity extends BaseTable {
 
     /**
