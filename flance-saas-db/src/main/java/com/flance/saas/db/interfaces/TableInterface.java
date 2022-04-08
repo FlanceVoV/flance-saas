@@ -16,4 +16,8 @@ public class TableInterface {
         InitTable.initSysTable(jdbcTemplate, "com.flance.saas");
     }
 
+    public void initSelfTable(String ... scans) {
+        InitTable.initSysTable(jdbcTemplate, scans);
+    }
+
 }

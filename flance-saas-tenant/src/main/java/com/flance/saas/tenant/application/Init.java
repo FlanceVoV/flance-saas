@@ -27,9 +27,9 @@ public class Init {
 
     @PostConstruct
     public void setCommonTable() {
-        tableInterface.initSysTable();
         log.info("初始化table--{}", commonTables);
         commonTables.forEach(tableName -> redisUtils.add(SaasConstant.SYS_TABLES_COMMON + tableName, tableName));
+        tableInterface.initSysTable();
     }
 
 }
