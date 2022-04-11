@@ -67,7 +67,7 @@ public class SysUserDomain extends BaseDomain<String, SysUserEntity> {
     public SysUserEntity get() {
         SysUserEntity found = getById();
         sysUserService.setUserMenu(found);
-        sysUserService.setUserMenu(found);
+        sysUserService.setUserRole(found);
         return found;
     }
 

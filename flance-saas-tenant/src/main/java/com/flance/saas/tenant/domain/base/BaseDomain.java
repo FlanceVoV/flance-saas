@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.flance.jdbc.mybatis.common.IEntity;
+import com.flance.saas.common.core.SaasConstant;
 import com.flance.saas.db.utils.FieldUtils;
 import com.flance.web.utils.AssertException;
 import com.flance.web.utils.AssertUtil;
@@ -96,6 +97,7 @@ public abstract class BaseDomain<ID extends Serializable, T extends IEntity<ID>>
      */
     public LambdaQueryWrapper<T> getWrapper(String ... args) {
         LambdaQueryWrapper<T> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(T::getStatus, SaasConstant.DATA_STATUS_NORMAL);
         if (null == args || args.length == 0 || null == this.t) {
             return lambdaQueryWrapper;
         }

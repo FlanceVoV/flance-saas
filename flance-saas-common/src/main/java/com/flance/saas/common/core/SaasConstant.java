@@ -28,4 +28,8 @@ public interface SaasConstant {
      */
     Long SAAS_USER_EXP_TIME = 7200L;
 
+    Integer DATA_STATUS_NORMAL = 1;
+
+    Integer DATA_STATUS_DELETED = 0;
+
 }

@@ -2,6 +2,7 @@ package com.flance.saas.tenant.domain.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flance.jdbc.mybatis.service.BaseService;
+import com.flance.saas.common.core.SaasConstant;
 import com.flance.saas.tenant.domain.menu.domain.MenuDomain;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.menu.service.MenuService;
@@ -42,6 +43,7 @@ public class SysUserServiceImpl extends BaseService<String, SysUserMapper, SysUs
     public SysUserEntity login(String userAccount, String userPassword) {
         LambdaQueryWrapper<SysUserEntity> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(SysUserEntity::getUserAccount, userAccount);
+        lambdaQueryWrapper.eq(SysUserEntity::getStatus, SaasConstant.DATA_STATUS_NORMAL);
         SysUserEntity found = this.getOne(lambdaQueryWrapper);
         AssertUtil.notNull(found, AssertException.getNormal("找不到用户，请确认账户是否输入正确[" + userAccount + "]", "-1"));
         String foundPassword = found.getUserPassword();
@@ -54,6 +56,7 @@ public class SysUserServiceImpl extends BaseService<String, SysUserMapper, SysUs
     public List<String> findRoleIds(String userId) {
         LambdaQueryWrapper<UserRoleEntity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserRoleEntity::getUserId, userId);
+        queryWrapper.eq(UserRoleEntity::getStatus, SaasConstant.DATA_STATUS_NORMAL);
         List<UserRoleEntity> list = userRoleService.list(queryWrapper);
         List<String> roleIds = Lists.newArrayList();
         list.forEach(item -> roleIds.add(item.getRoleId()));
@@ -63,7 +66,11 @@ public class SysUserServiceImpl extends BaseService<String, SysUserMapper, SysUs
     @Override
     public void setUserMenu(SysUserEntity sysUserEntity) {
         MenuEntity menuEntity = new MenuEntity();
-        menuEntity.setIds(roleService.findMenuIds(findRoleIds(sysUserEntity.getId())));
+        List<String> roleIds = roleService.findMenuIds(findRoleIds(sysUserEntity.getId()));
+        if (null == roleIds || roleIds.size() == 0) {
+            return;
+        }
+        menuEntity.setIds(roleIds);
         MenuDomain menuDomain = MenuDomain.builder()
                 .menuEntity(menuEntity)
                 .menuService(menuService)
