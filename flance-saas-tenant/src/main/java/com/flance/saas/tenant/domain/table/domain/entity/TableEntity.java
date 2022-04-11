@@ -28,6 +28,9 @@ public class TableEntity extends BaseTable {
     @Column(notNull = true)
     private String tableName;
 
+    @Column(notNull = true)
+    private String tableClassName;
+
     /**
      * 表备注、说明
      */
