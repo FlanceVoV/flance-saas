@@ -38,6 +38,7 @@ public class AppUserEntity extends BaseTable {
     /**
      * 绑定第三方登录
      */
+    @Column
     private String openId;
 
     /**
@@ -49,11 +50,13 @@ public class AppUserEntity extends BaseTable {
     /**
      * 用户昵称
      */
+    @Column
     private String userNickName;
 
     /**
      * 用户头像
      */
+    @Column
     private String userImages;
 
     /**
