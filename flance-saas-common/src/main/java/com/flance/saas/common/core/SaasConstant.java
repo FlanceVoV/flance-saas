@@ -28,7 +28,7 @@ public interface SaasConstant {
      */
     Long SAAS_USER_EXP_TIME = 7200L;
 
-    String DATA_STATUS_FIELD_NAME = "status";
+    String DATA_STATUS_FIELD_NAME = "getStatus";
 
     Integer DATA_STATUS_NORMAL = 1;
 
