@@ -8,6 +8,7 @@ import com.flance.saas.tenant.infrastructure.LoginUtil;
 import com.flance.saas.common.core.SaasConstant;
 import com.flance.web.utils.GsonUtils;
 import com.flance.web.utils.RedisUtils;
+import com.flance.web.utils.RequestConstant;
 import com.flance.web.utils.web.request.PageRequest;
 import com.flance.web.utils.web.response.PageResponse;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class SysUserInterface {
         LoginUser loginUser = sysUserDomain.login();
         loginUser.setUserType("sys");
         String userInfo = GsonUtils.toJSONString(loginUser);
-        String key = SaasConstant.SYS_TOKEN_KEY + loginUser.getUserId();
+        String key = RequestConstant.SYS_TOKEN_KEY + loginUser.getUserId();
         LoginUtil.loginSet(key, redisUtils);
         redisUtils.add(key + ":" + loginUser.getToken(), userInfo, SaasConstant.SAAS_USER_EXP_TIME);
         return loginUser;
