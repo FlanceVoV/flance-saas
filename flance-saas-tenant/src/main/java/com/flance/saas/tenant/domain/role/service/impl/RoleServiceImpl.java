@@ -23,9 +23,12 @@ public class RoleServiceImpl extends BaseService<String, RoleMapper, RoleEntity>
 
     @Override
     public List<String> findMenuIds(List<String> roleIds) {
+        if (null == roleIds || roleIds.size() == 0) {
+            return Lists.newArrayList();
+        }
         LambdaQueryWrapper<RoleMenuEntity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(RoleMenuEntity::getStatus, SaasConstant.DATA_STATUS_NORMAL);
-        queryWrapper.in(null != roleIds && roleIds.size() > 0, RoleMenuEntity::getRoleId, roleIds);
+        queryWrapper.in(RoleMenuEntity::getRoleId, roleIds);
         List<RoleMenuEntity> roleMenuEntities = roleMenuService.list(queryWrapper);
         List<String> menuIds = Lists.newArrayList();
         roleMenuEntities.forEach(item -> menuIds.add(item.getMenuId()));

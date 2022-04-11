@@ -8,6 +8,7 @@ import com.flance.saas.common.utils.LoginUtil;
 import com.flance.saas.common.utils.TenantChooseUtil;
 import com.flance.web.utils.GsonUtils;
 import com.flance.web.utils.RedisUtils;
+import com.flance.web.utils.RequestConstant;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,7 +32,7 @@ public class TenantAppInterceptor implements HandlerInterceptor {
         String token = request.getHeader("token");
         String userId = request.getHeader("userId");
         String tenantId = request.getHeader("tenantId");
-        String key = SaasConstant.SYS_TOKEN_KEY + userId;
+        String key = RequestConstant.SYS_TOKEN_KEY + userId;
         String userInfo = redisUtils.get(key + ":" + token);
 
         // 租户表权限校验 tenant.getTables;
