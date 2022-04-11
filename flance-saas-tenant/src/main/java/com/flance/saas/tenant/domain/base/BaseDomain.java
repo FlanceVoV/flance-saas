@@ -111,7 +111,7 @@ public abstract class BaseDomain<ID extends Serializable, T extends IEntity<ID>>
                 return;
             }
             String op = parses[0];
-            String fieldName = parses[1];
+            String fieldName = getFieldName(parses[1]);
             String valueField = parses[2];
 
             switch (OP.valueOf(op)) {
@@ -152,14 +152,8 @@ public abstract class BaseDomain<ID extends Serializable, T extends IEntity<ID>>
         return queryWrapper;
     }
 
-    public String getMethod(String fieldName) {
-        try {
-            Method method = t.getClass().getMethod("get" + FieldUtils.captureName(fieldName));
-            return method.getName();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    public String getFieldName(String fieldName) {
+        return FieldUtils.humpToLine(fieldName);
     }
 
     private Object getValues(String fieldName) {

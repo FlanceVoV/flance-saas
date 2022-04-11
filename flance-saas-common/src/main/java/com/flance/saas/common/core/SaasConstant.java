@@ -2,6 +2,8 @@ package com.flance.saas.common.core;
 
 public interface SaasConstant {
 
+    String SYS_TENANT_ID_SYSTEM = "system";
+
     String SYS_TENANT_KEY = "sys:tenant:";
 
     String SYS_TABLES_COMMON = "sys:tables:common:";

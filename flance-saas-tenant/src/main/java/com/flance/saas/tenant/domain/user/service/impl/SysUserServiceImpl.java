@@ -57,6 +57,7 @@ public class SysUserServiceImpl extends BaseService<String, SysUserMapper, SysUs
         LambdaQueryWrapper<UserRoleEntity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserRoleEntity::getUserId, userId);
         queryWrapper.eq(UserRoleEntity::getStatus, SaasConstant.DATA_STATUS_NORMAL);
+        queryWrapper.eq(UserRoleEntity::getTenantId, SaasConstant.SYS_TENANT_ID_SYSTEM);
         List<UserRoleEntity> list = userRoleService.list(queryWrapper);
         List<String> roleIds = Lists.newArrayList();
         list.forEach(item -> roleIds.add(item.getRoleId()));
@@ -68,25 +69,33 @@ public class SysUserServiceImpl extends BaseService<String, SysUserMapper, SysUs
         MenuEntity menuEntity = new MenuEntity();
         List<String> menuIds = roleService.findMenuIds(findRoleIds(sysUserEntity.getId()));
         if (null == menuIds || menuIds.size() == 0) {
+            sysUserEntity.setUserMenus(Lists.newArrayList());
             return;
         }
         menuEntity.setIds(menuIds);
+        menuEntity.setTenantId(SaasConstant.SYS_TENANT_ID_SYSTEM);
         MenuDomain menuDomain = MenuDomain.builder()
                 .menuEntity(menuEntity)
                 .menuService(menuService)
                 .build();
-        sysUserEntity.setUserMenus(menuDomain.list("IN_id_ids"));
+        sysUserEntity.setUserMenus(menuDomain.list("IN_id_ids", "EQ_tenantId_tenantId"));
     }
 
     @Override
     public void setUserRole(SysUserEntity sysUserEntity) {
         RoleEntity roleEntity = new RoleEntity();
-        roleEntity.setIds(findRoleIds(sysUserEntity.getId()));
+        List<String> roleIds = findRoleIds(sysUserEntity.getId());
+        if (null == roleIds || roleIds.size() == 0) {
+            sysUserEntity.setUserRoles(Lists.newArrayList());
+            return;
+        }
+        roleEntity.setIds(roleIds);
+        roleEntity.setTenantId(SaasConstant.SYS_TENANT_ID_SYSTEM);
         RoleDomain roleDomain = RoleDomain.builder()
                 .roleEntity(roleEntity)
                 .roleService(roleService)
                 .build();
-        sysUserEntity.setUserRoles(roleDomain.list("IN_id_ids"));
+        sysUserEntity.setUserRoles(roleDomain.list("IN_id_ids", "EQ_tenantId_tenantId"));
     }
 
     @Override

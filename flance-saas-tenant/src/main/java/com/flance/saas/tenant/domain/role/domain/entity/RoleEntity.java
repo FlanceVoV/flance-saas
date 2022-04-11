@@ -42,6 +42,9 @@ public class RoleEntity extends BaseTable {
     @Column(notNull = true)
     private Integer enabled;
 
+    @Column(notNull = true)
+    private String tenantId;
+
     @TableField(exist = false)
     private List<String> auths;
 
