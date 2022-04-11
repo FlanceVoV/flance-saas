@@ -36,7 +36,7 @@ public class RoleEntity extends BaseTable {
      * 允许访问的api id
      * ,隔开
      */
-    @Column(notNull = true)
+    @Column(notNull = true, length = "2000")
     private String authConfig;
 
     @Column(notNull = true)
