@@ -6,10 +6,12 @@ import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
 import com.flance.saas.tenant.domain.role.service.RoleService;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 
 @Data
 @Builder
+@EqualsAndHashCode(callSuper = true)
 public class RoleDomain extends BaseDomain<String, RoleEntity> {
 
     @NonNull

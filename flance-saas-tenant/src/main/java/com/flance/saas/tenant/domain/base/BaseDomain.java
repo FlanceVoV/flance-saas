@@ -2,6 +2,7 @@ package com.flance.saas.tenant.domain.base;
 
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -13,6 +14,7 @@ import com.flance.web.utils.AssertUtil;
 import com.flance.web.utils.web.request.PageRequest;
 import com.flance.web.utils.web.response.PageResponse;
 
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -81,7 +83,7 @@ public abstract class BaseDomain<ID extends Serializable, T extends IEntity<ID>>
 
     /**
      * args 格式
-     * OPERATOR_FIELDNAME
+     * OPERATOR_QUERYFIELD_VALUEFIELD
      * EQ_
      * NEQ_
      * IN_
@@ -92,56 +94,72 @@ public abstract class BaseDomain<ID extends Serializable, T extends IEntity<ID>>
      * NLIKE_
      * LLIKE_
      * RLIKE_
+     * IDIN_
      *
      *
      */
-    public LambdaQueryWrapper<T> getWrapper(String ... args) {
-        LambdaQueryWrapper<T> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(getField(SaasConstant.DATA_STATUS_FIELD_NAME), SaasConstant.DATA_STATUS_NORMAL);
+    public QueryWrapper<T> getWrapper(String ... args) {
+        QueryWrapper<T> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(SaasConstant.DATA_STATUS_FIELD_NAME, SaasConstant.DATA_STATUS_NORMAL);
         if (null == args || args.length == 0 || null == this.t) {
-            return lambdaQueryWrapper;
+            return queryWrapper;
         }
 
         Arrays.stream(args).forEach(arg -> {
             String[] parses = arg.split("_");
-            if (!arg.contains("_") || parses.length != 2) {
+            if (!arg.contains("_") || parses.length != 3) {
                 return;
             }
             String op = parses[0];
             String fieldName = parses[1];
+            String valueField = parses[2];
 
             switch (OP.valueOf(op)) {
                 case EQ:
-                    lambdaQueryWrapper.eq(getCondition(fieldName), getField(fieldName), getValues(fieldName));
+                    queryWrapper.eq(getCondition(valueField), fieldName, getValues(valueField));
                     break;
                 case NEQ:
-                    lambdaQueryWrapper.ne(getCondition(fieldName), getField(fieldName), getValues(fieldName));
+                    queryWrapper.ne(getCondition(valueField), fieldName, getValues(valueField));
                     break;
                 case IN:
-                    lambdaQueryWrapper.in(getCondition(fieldName), getField(fieldName), getValues(fieldName));
+                    Object inValues = getValues(valueField);
+                    if (inValues instanceof Collection) {
+                        Collection<?> collection = (Collection<?>) inValues;
+                        queryWrapper.in(getCondition(valueField), fieldName, collection);
+                    }
                     break;
                 case NIN:
-                    lambdaQueryWrapper.notIn(getCondition(fieldName), getField(fieldName), getValues(fieldName));
+                    Object notInValues = getValues(valueField);
+                    if (notInValues instanceof Collection) {
+                        Collection<?> collection = (Collection<?>) notInValues;
+                        queryWrapper.notIn(getCondition(valueField), fieldName, collection);
+                    }
                     break;
                 case LT:
-                    lambdaQueryWrapper.lt(getCondition(fieldName), getField(fieldName), getValues(fieldName));
+                    queryWrapper.lt(getCondition(valueField), fieldName, getValues(valueField));
                     break;
                 case GT:
-                    lambdaQueryWrapper.gt(getCondition(fieldName), getField(fieldName), getValues(fieldName));
+                    queryWrapper.gt(getCondition(valueField), fieldName, getValues(valueField));
                     break;
                 case LIKE:
-                    lambdaQueryWrapper.like(getCondition(fieldName), getField(fieldName), getValues(fieldName));
+                    queryWrapper.like(getCondition(valueField), fieldName, getValues(valueField));
                     break;
                 default:
                     break;
 
             }
         });
-        return lambdaQueryWrapper;
+        return queryWrapper;
     }
 
-    private SFunction<T, ?> getField(String fieldName) {
-        return t1 -> getValues(fieldName);
+    public String getMethod(String fieldName) {
+        try {
+            Method method = t.getClass().getMethod("get" + FieldUtils.captureName(fieldName));
+            return method.getName();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private Object getValues(String fieldName) {
@@ -163,6 +181,10 @@ public abstract class BaseDomain<ID extends Serializable, T extends IEntity<ID>>
             return ((Collection<?>)value).size() > 0;
         }
         return value.toString().length() > 0;
+    }
+
+    private void writeReplace(ObjectOutputStream out) {
+
     }
 
     enum OP {

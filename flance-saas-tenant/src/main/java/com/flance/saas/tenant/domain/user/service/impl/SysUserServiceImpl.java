@@ -66,16 +66,16 @@ public class SysUserServiceImpl extends BaseService<String, SysUserMapper, SysUs
     @Override
     public void setUserMenu(SysUserEntity sysUserEntity) {
         MenuEntity menuEntity = new MenuEntity();
-        List<String> roleIds = roleService.findMenuIds(findRoleIds(sysUserEntity.getId()));
-        if (null == roleIds || roleIds.size() == 0) {
+        List<String> menuIds = roleService.findMenuIds(findRoleIds(sysUserEntity.getId()));
+        if (null == menuIds || menuIds.size() == 0) {
             return;
         }
-        menuEntity.setIds(roleIds);
+        menuEntity.setIds(menuIds);
         MenuDomain menuDomain = MenuDomain.builder()
                 .menuEntity(menuEntity)
                 .menuService(menuService)
                 .build();
-        sysUserEntity.setUserMenus(menuDomain.list("IN_ids"));
+        sysUserEntity.setUserMenus(menuDomain.list("IN_id_ids"));
     }
 
     @Override
@@ -86,7 +86,7 @@ public class SysUserServiceImpl extends BaseService<String, SysUserMapper, SysUs
                 .roleEntity(roleEntity)
                 .roleService(roleService)
                 .build();
-        sysUserEntity.setUserRoles(roleDomain.list("IN_ids"));
+        sysUserEntity.setUserRoles(roleDomain.list("IN_id_ids"));
     }
 
     @Override
