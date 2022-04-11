@@ -41,6 +41,15 @@ public class SysUserDomain extends BaseDomain<String, SysUserEntity> {
     }
 
     /**
+     * 创建用户
+     */
+    public void register() {
+        String password = sysUserService.encodePassword(sysUserEntity.getUserAccount(), sysUserEntity.getUserPassword());
+        sysUserEntity.setUserPassword(password);
+        super.create();
+    }
+
+    /**
      * 登录
      * @return  返回登录信息
      */

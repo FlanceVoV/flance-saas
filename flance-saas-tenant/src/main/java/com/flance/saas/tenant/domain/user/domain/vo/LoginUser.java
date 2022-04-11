@@ -2,6 +2,7 @@ package com.flance.saas.tenant.domain.user.domain.vo;
 
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
+import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
 import lombok.Builder;
 import lombok.Data;
 
@@ -23,6 +24,12 @@ public class LoginUser {
 
     private String userPhone;
 
+    private String userNickName;
+
+    private String userImages;
+
+    private String userIdNum;
+
     private String authConfig;
 
     private String menuConfig;
@@ -30,6 +37,8 @@ public class LoginUser {
     private String roleConfig;
 
     private List<String> auths;
+
+    private List<Tenant> userTenants;
 
     private List<MenuEntity> userMenus;
 

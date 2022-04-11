@@ -72,7 +72,7 @@ public class Tenant extends BaseTable {
     /**
      * 租户表实例，开通的业务表
      */
-    @Column(notNull = true, length = "2000")
+    @Column(notNull = true, length = "4000")
     private String openTables;
 
     /**
@@ -81,6 +81,12 @@ public class Tenant extends BaseTable {
      */
     @Column(notNull = true)
     private Integer enabled;
+
+    /**
+     * 是否开放注册
+     */
+    @Column(notNull = true)
+    private Integer isOpen;
 
     /**
      * 租户所拥有的业务表实例

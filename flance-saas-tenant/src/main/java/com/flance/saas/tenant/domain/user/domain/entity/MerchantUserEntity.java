@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.flance.saas.db.annotation.Column;
 import com.flance.saas.db.annotation.Table;
 import com.flance.saas.db.tables.common.BaseTable;
+import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
+import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
 import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
 import com.flance.saas.tenant.domain.tenant.domain.entity.TenantMerchantUser;
 import lombok.Data;
@@ -81,5 +83,11 @@ public class MerchantUserEntity extends BaseTable {
      * 商户应用
      */
     @TableField(exist = false)
-    private List<TenantMerchantUser> merchantTenant;
+    private List<Tenant> tenants;
+
+    @TableField(exist = false)
+    private List<MenuEntity> userMenus;
+
+    @TableField(exist = false)
+    private List<RoleEntity> userRoles;
 }
