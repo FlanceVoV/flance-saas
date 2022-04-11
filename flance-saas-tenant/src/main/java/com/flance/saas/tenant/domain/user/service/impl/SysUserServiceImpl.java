@@ -45,8 +45,7 @@ public class SysUserServiceImpl extends BaseService<String, SysUserMapper, SysUs
         SysUserEntity found = this.getOne(lambdaQueryWrapper);
         AssertUtil.notNull(found, AssertException.getNormal("找不到用户，请确认账户是否输入正确[" + userAccount + "]", "-1"));
         String foundPassword = found.getUserPassword();
-        String waitCheck = encodePassword(userAccount, userPassword);
-        boolean flag = passwordEncoder.matches(foundPassword, waitCheck);
+        boolean flag = passwordEncoder.matches(userAccount + userPassword, foundPassword);
         AssertUtil.mastTrue(flag, AssertException.getNormal("密码不正确，请确认后再尝试", "-1"));
         return found;
     }

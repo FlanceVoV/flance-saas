@@ -18,6 +18,12 @@ public class RoleDomain extends BaseDomain<String, RoleEntity> {
     @NonNull
     private RoleService roleService;
 
+    public RoleDomain(@NonNull RoleEntity roleEntity, @NonNull RoleService roleService) {
+        this.roleEntity = roleEntity;
+        this.roleService = roleService;
+        setInfo(roleEntity, roleService);
+    }
+
     @Override
     public String createId() {
         return IdUtil.fastSimpleUUID();

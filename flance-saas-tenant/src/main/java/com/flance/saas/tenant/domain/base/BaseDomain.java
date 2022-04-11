@@ -14,9 +14,8 @@ import com.flance.web.utils.web.response.PageResponse;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class BaseDomain<ID extends Serializable, T extends IEntity<ID>> implements IDomain<ID, T> {
 
@@ -154,7 +153,14 @@ public abstract class BaseDomain<ID extends Serializable, T extends IEntity<ID>>
     }
 
     private boolean getCondition(String fieldName) {
-        return getValues(fieldName) != null;
+        Object value = getValues(fieldName);
+        if (null == value) {
+            return false;
+        }
+        if (value instanceof Collection) {
+            return ((Collection<?>)value).size() > 0;
+        }
+        return value.toString().length() > 0;
     }
 
     enum OP {
