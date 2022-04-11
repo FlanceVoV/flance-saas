@@ -97,7 +97,7 @@ public abstract class BaseDomain<ID extends Serializable, T extends IEntity<ID>>
      */
     public LambdaQueryWrapper<T> getWrapper(String ... args) {
         LambdaQueryWrapper<T> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(T::getStatus, SaasConstant.DATA_STATUS_NORMAL);
+        lambdaQueryWrapper.eq(getField(SaasConstant.DATA_STATUS_FIELD_NAME), SaasConstant.DATA_STATUS_NORMAL);
         if (null == args || args.length == 0 || null == this.t) {
             return lambdaQueryWrapper;
         }
