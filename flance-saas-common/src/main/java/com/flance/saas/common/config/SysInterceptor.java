@@ -1,17 +1,11 @@
 package com.flance.saas.common.config;
 
 import com.flance.saas.common.core.AuthService;
-import com.flance.saas.common.core.SaasConstant;
-import com.flance.saas.common.core.TenantCacheModel;
-import com.flance.saas.common.login.TenantChooseModel;
 import com.flance.saas.common.utils.LogUtil;
 import com.flance.saas.common.utils.LoginUtil;
-import com.flance.saas.common.utils.TenantChooseUtil;
-import com.flance.web.utils.GsonUtils;
 import com.flance.web.utils.RedisUtils;
 import com.flance.web.utils.RequestConstant;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,12 +13,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * 租户应用拦截器
- * @author jhf
- */
 @Component
-public class TenantAppInterceptor implements HandlerInterceptor {
+public class SysInterceptor implements HandlerInterceptor {
 
     @Resource
     RedisUtils redisUtils;
@@ -36,31 +26,17 @@ public class TenantAppInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader(RequestConstant.HEADER_TOKEN);
         String userId = request.getHeader(RequestConstant.HEADER_USER_ID);
-        String tenantId = request.getHeader(SaasConstant.HEADER_TENANT_ID);
         String key = RequestConstant.SYS_TOKEN_KEY + userId;
         String userInfo = redisUtils.get(key + ":" + token);
-
-        // 租户表权限校验 tenant.getTables;
-        if (StringUtils.isEmpty(userInfo) || !authService.checkTenantAuth(tenantId)) {
-            return false;
+        String requestId = request.getHeader(RequestConstant.HEADER_REQUEST_ID);
+        if (null != userInfo) {
+            redisUtils.setExp(key + ":" + token, 7200L);
+            LoginUtil.putLogin(userInfo);
         }
-
-        String tenantCache = redisUtils.get(SaasConstant.SYS_TENANT_KEY + tenantId);
-        if (null == tenantCache) {
+        if (authService.checkUserAuth(requestId)) {
             return true;
         }
-        TenantCacheModel tenantCacheModel = GsonUtils.fromString(tenantCache, TenantCacheModel.class);
-
-        TenantChooseModel tenantChooseModel = new TenantChooseModel();
-        tenantChooseModel.setTenantId(tenantId);
-        tenantChooseModel.setUserId(userId);
-        tenantChooseModel.setToken(token);
-        tenantChooseModel.setTenantSchema(tenantCacheModel.getTenantSchema());
-        tenantChooseModel.setTenantSuffix(tenantCacheModel.getTenantSuffix());
-        tenantChooseModel.setTables(tenantCacheModel.getTables());
-
-        TenantChooseUtil.putTenantLogin(tenantChooseModel);
-        return true;
+        return HandlerInterceptor.super.preHandle(request, response, handler);
     }
 
     @Override
@@ -70,7 +46,6 @@ public class TenantAppInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-
         try {
             HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
         } catch (Exception e ) {
@@ -78,7 +53,6 @@ public class TenantAppInterceptor implements HandlerInterceptor {
         } finally {
             LogUtil.removeLogId();
             LoginUtil.removeLogin();
-            TenantChooseUtil.removeTenantLogin();
         }
     }
 }

@@ -8,6 +8,10 @@ public interface SaasConstant {
 
     String SYS_TABLES_COMMON = "sys:tables:common:";
 
+    String SYS_OPEN_URL = "sys:open:url";
+
+    String HEADER_TENANT_ID = "tenant_id";
+
     /**
      * saas 系统 登录 token 过期时间 秒
      */

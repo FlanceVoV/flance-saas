@@ -1,10 +1,10 @@
 package com.flance.saas.tenant.interfaces.user;
 
+import com.flance.saas.common.utils.LoginUtil;
 import com.flance.saas.tenant.domain.user.domain.MerchantUserDomain;
 import com.flance.saas.tenant.domain.user.domain.entity.MerchantUserEntity;
 import com.flance.saas.tenant.domain.user.domain.vo.LoginUser;
 import com.flance.saas.tenant.domain.user.service.MerchantUserService;
-import com.flance.saas.tenant.infrastructure.LoginUtil;
 import com.flance.saas.common.core.SaasConstant;
 import com.flance.web.utils.GsonUtils;
 import com.flance.web.utils.RedisUtils;

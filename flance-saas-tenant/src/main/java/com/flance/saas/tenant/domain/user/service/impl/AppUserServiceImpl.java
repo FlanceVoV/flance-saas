@@ -71,12 +71,11 @@ public class AppUserServiceImpl extends BaseService<String, AppUserMapper, AppUs
     }
 
     @Override
-    public void setUserMenu(AppUserEntity appUserEntity, String tenantId) {
+    public List<MenuEntity> getUserMenu(String userId, String tenantId) {
         MenuEntity menuEntity = new MenuEntity();
-        List<String> menuIds = roleService.findMenuIds(findRoleIds(appUserEntity.getId(), tenantId));
+        List<String> menuIds = roleService.findMenuIds(findRoleIds(userId, tenantId));
         if (null == menuIds || menuIds.size() == 0) {
-            appUserEntity.setUserMenus(Lists.newArrayList());
-            return;
+            return Lists.newArrayList();
         }
         menuEntity.setIds(menuIds);
         menuEntity.setTenantId(tenantId);
@@ -84,16 +83,15 @@ public class AppUserServiceImpl extends BaseService<String, AppUserMapper, AppUs
                 .menuEntity(menuEntity)
                 .menuService(menuService)
                 .build();
-        appUserEntity.setUserMenus(menuDomain.list("IN_id_ids", "EQ_tenantId_tenantId"));
+        return menuDomain.list("IN_id_ids", "EQ_tenantId_tenantId");
     }
 
     @Override
-    public void setUserRole(AppUserEntity appUserEntity, String tenantId) {
+    public List<RoleEntity> getUserRole(String userId, String tenantId) {
         RoleEntity roleEntity = new RoleEntity();
-        List<String> roleIds = findRoleIds(appUserEntity.getId(), tenantId);
+        List<String> roleIds = findRoleIds(userId, tenantId);
         if (null == roleIds || roleIds.size() == 0) {
-            appUserEntity.setUserRoles(Lists.newArrayList());
-            return;
+            return Lists.newArrayList();
         }
         roleEntity.setIds(roleIds);
         roleEntity.setTenantId(tenantId);
@@ -101,7 +99,7 @@ public class AppUserServiceImpl extends BaseService<String, AppUserMapper, AppUs
                 .roleEntity(roleEntity)
                 .roleService(roleService)
                 .build();
-        appUserEntity.setUserRoles(roleDomain.list("IN_id_ids", "EQ_tenantId_tenantId"));
+        return roleDomain.list("IN_id_ids", "EQ_tenantId_tenantId");
     }
 
     @Override

@@ -16,8 +16,12 @@ public class InterceptorConfig implements WebMvcConfigurer {
     @Resource
     TenantAppInterceptor tenantAppInterceptor;
 
+    @Resource
+    SysInterceptor sysInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(sysInterceptor).addPathPatterns("/**");
         registry.addInterceptor(tenantAppInterceptor).addPathPatterns("/tenant-app/**");
     }
 

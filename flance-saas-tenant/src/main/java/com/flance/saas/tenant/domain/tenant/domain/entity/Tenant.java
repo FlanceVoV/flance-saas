@@ -34,7 +34,7 @@ public class Tenant extends BaseTable {
     private String tenantId;
 
     /**
-     * 用户id，即该租户属于哪个用户
+     * 用户id，即该租户属于哪个用户（租户管理员-merchantUser）
      */
     @Column(notNull = true)
     private String userId;
@@ -44,6 +44,18 @@ public class Tenant extends BaseTable {
      */
     @Column(notNull = true)
     private String tenantName;
+
+    /**
+     * 租户简介
+     */
+    @Column
+    private String tenantDesc;
+
+    /**
+     * 租户应用图标
+     */
+    @Column
+    private String tenantIcon;
 
     /**
      * 租户公钥

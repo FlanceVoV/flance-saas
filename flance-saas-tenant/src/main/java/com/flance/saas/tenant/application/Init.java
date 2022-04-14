@@ -22,6 +22,9 @@ public class Init {
     @Value("${flance.saas.common.tables}")
     List<String> commonTables;
 
+    @Value("${flance.saas.common.init}")
+    Boolean initSysTable;
+
     @Resource
     TableInterface tableInterface;
 
@@ -29,7 +32,9 @@ public class Init {
     public void setCommonTable() {
         log.info("初始化table--{}", commonTables);
         commonTables.forEach(tableName -> redisUtils.add(SaasConstant.SYS_TABLES_COMMON + tableName, tableName));
-        tableInterface.initSysTable();
+        if (initSysTable) {
+            tableInterface.initSysTable();
+        }
     }
 
 }

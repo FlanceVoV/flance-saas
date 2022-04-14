@@ -34,6 +34,7 @@ public class AppUserDomain extends BaseDomain<String, AppUserEntity> {
         String token = IdUtil.fastSimpleUUID();
         return LoginUser.builder()
                 .userAccount(logon.getUserAccount())
+                .userTenants(appUserService.getAppUserTenants(appUserEntity.getId()))
                 .token(token)
                 .build();
     }

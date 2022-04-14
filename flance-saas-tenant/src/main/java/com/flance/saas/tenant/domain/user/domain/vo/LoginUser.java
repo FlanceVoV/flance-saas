@@ -3,6 +3,7 @@ package com.flance.saas.tenant.domain.user.domain.vo;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
 import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
+import com.google.common.collect.Lists;
 import lombok.Builder;
 import lombok.Data;
 
@@ -43,6 +44,14 @@ public class LoginUser {
     private List<MenuEntity> userMenus;
 
     private List<RoleEntity> userRoles;
+
+    public List<String> getTenants() {
+        List<String> tenants = Lists.newArrayList();
+        if (null != userTenants) {
+            userTenants.forEach(item -> tenants.add(item.getTenantId()));
+        }
+        return tenants;
+    }
 
     public String getAuthConfig() {
         if (null != auths) {
