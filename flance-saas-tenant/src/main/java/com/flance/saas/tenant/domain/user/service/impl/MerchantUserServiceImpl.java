@@ -2,7 +2,10 @@ package com.flance.saas.tenant.domain.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flance.jdbc.mybatis.service.BaseService;
+import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
+import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.menu.service.MenuService;
+import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
 import com.flance.saas.tenant.domain.role.service.RoleMenuService;
 import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
 import com.flance.saas.tenant.domain.tenant.service.TenantService;
@@ -26,7 +29,7 @@ public class MerchantUserServiceImpl extends BaseService<String, MerchantUserMap
     private PasswordEncoder passwordEncoder;
 
     @Resource
-    private TenantService tenantService;
+    private BaseUserService baseUserService;
 
     @Override
     public MerchantUserEntity loginForOpenId(String openId) {
@@ -46,8 +49,23 @@ public class MerchantUserServiceImpl extends BaseService<String, MerchantUserMap
     }
 
     @Override
-    public List<Tenant> getAppUserTenants(String appUserId) {
-        return tenantService.getAppUserTenant(appUserId);
+    public List<Tenant> getMerchantUserTenants(String userId) {
+        return baseUserService.getTenantUserTenants(userId);
+    }
+
+    @Override
+    public List<MenuEntity> getUserMenu(String userId, String tenantId) {
+        return baseUserService.getUserMenu(userId, tenantId);
+    }
+
+    @Override
+    public List<RoleEntity> getUserRole(String userId, String tenantId) {
+        return baseUserService.getUserRole(userId, tenantId);
+    }
+
+    @Override
+    public List<AuthEntity> getUserAuth(String userId, String tenantId) {
+        return baseUserService.getUserAuth(userId, tenantId);
     }
 
     @Override

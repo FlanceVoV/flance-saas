@@ -1,8 +1,10 @@
 package com.flance.saas.tenant.interfaces.user;
 
 import com.flance.saas.common.utils.LoginUtil;
+import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
+import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
 import com.flance.saas.tenant.domain.user.domain.AppUserDomain;
 import com.flance.saas.tenant.domain.user.domain.entity.AppUserEntity;
 import com.flance.saas.tenant.domain.user.domain.vo.LoginUser;
@@ -63,8 +65,11 @@ public class AppUserInterface {
         return appUserService.getUserMenu(userId, tenantId);
     }
 
-    public List<RoleEntity> getTenantRoleMenu(String userId, String tenantId) {
+    public List<RoleEntity> getTenantUserRole(String userId, String tenantId) {
         return appUserService.getUserRole(userId, tenantId);
     }
 
+    public List<AuthEntity> getTenantUserAuth(String userId, String tenantId) {
+        return appUserService.getUserAuth(userId, tenantId);
+    }
 }

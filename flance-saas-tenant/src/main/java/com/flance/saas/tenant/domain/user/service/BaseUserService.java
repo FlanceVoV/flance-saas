@@ -4,11 +4,14 @@ import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
 import com.flance.saas.tenant.domain.base.IUser;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
+import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
 
 import java.util.List;
 
 
 public interface BaseUserService {
+
+    List<Tenant> getTenantUserTenants(String userId);
 
     List<MenuEntity> getUserMenu(String userId, String tenantId);
 

@@ -57,6 +57,7 @@ public class SysUserDomain extends BaseDomain<String, SysUserEntity> {
         SysUserEntity logon = sysUserService.login(sysUserEntity.getUserAccount(), sysUserEntity.getUserPassword());
         sysUserService.setUserMenu(logon);
         sysUserService.setUserRole(logon);
+        sysUserService.setUserAuth(logon);
         String token = IdUtil.fastSimpleUUID();
         return LoginUser.builder()
                 .userId(logon.getId())
@@ -77,6 +78,7 @@ public class SysUserDomain extends BaseDomain<String, SysUserEntity> {
         SysUserEntity found = getById();
         sysUserService.setUserMenu(found);
         sysUserService.setUserRole(found);
+        sysUserService.setUserAuth(found);
         return found;
     }
 

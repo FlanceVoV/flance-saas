@@ -84,7 +84,7 @@ public class MerchantUserEntity extends BaseTable implements IUser {
      * 商户应用
      */
     @TableField(exist = false)
-    private List<Tenant> tenants;
+    private List<Tenant> merchantTenants;
 
     @TableField(exist = false)
     private List<MenuEntity> userMenus;

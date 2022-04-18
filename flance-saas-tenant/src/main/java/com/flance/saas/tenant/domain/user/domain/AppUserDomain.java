@@ -30,11 +30,10 @@ public class AppUserDomain extends BaseDomain<String, AppUserEntity> {
 
     public LoginUser login() {
         AppUserEntity logon = appUserService.loginForPassword(appUserEntity.getUserAccount(), appUserEntity.getUserPassword());
-        logon.setAppTenant(appUserService.getAppUserTenants(logon.getId()));
         String token = IdUtil.fastSimpleUUID();
         return LoginUser.builder()
+                .userTenants(appUserService.getAppUserTenants(logon.getId()))
                 .userAccount(logon.getUserAccount())
-                .userTenants(appUserService.getAppUserTenants(appUserEntity.getId()))
                 .token(token)
                 .build();
     }

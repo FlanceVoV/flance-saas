@@ -45,6 +45,11 @@ public class SysUserServiceImpl extends BaseService<String, SysUserMapper, SysUs
     }
 
     @Override
+    public void setUserAuth(SysUserEntity sysUserEntity) {
+        baseUserService.setUserAuth(sysUserEntity, sysUserEntity.getId(), null);
+    }
+
+    @Override
     public String encodePassword(String userAccount, String userPassword) {
         return passwordEncoder.encode(userAccount + userPassword);
     }

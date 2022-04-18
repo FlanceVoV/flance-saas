@@ -2,6 +2,7 @@ package com.flance.saas.tenant.domain.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flance.jdbc.mybatis.service.BaseService;
+import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.menu.service.MenuService;
 import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
@@ -28,9 +29,6 @@ public class AppUserServiceImpl extends BaseService<String, AppUserMapper, AppUs
     private PasswordEncoder passwordEncoder;
 
     @Resource
-    private TenantService tenantService;
-
-    @Resource
     private BaseUserService baseUserService;
 
     @Override
@@ -52,7 +50,7 @@ public class AppUserServiceImpl extends BaseService<String, AppUserMapper, AppUs
 
     @Override
     public List<Tenant> getAppUserTenants(String appUserId) {
-        return tenantService.getAppUserTenant(appUserId);
+        return baseUserService.getTenantUserTenants(appUserId);
     }
 
     @Override
@@ -63,6 +61,11 @@ public class AppUserServiceImpl extends BaseService<String, AppUserMapper, AppUs
     @Override
     public List<RoleEntity> getUserRole(String userId, String tenantId) {
         return baseUserService.getUserRole(userId, tenantId);
+    }
+
+    @Override
+    public List<AuthEntity> getUserAuth(String userId, String tenantId) {
+        return baseUserService.getUserAuth(userId, tenantId);
     }
 
     @Override

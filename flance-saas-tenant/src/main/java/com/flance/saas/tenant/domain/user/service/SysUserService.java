@@ -13,6 +13,8 @@ public interface SysUserService extends IService<SysUserEntity> {
 
     void setUserRole(SysUserEntity sysUserEntity);
 
+    void setUserAuth(SysUserEntity sysUserEntity);
+
     String encodePassword(String userAccount, String userPassword);
 
 }

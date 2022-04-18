@@ -11,6 +11,8 @@ import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
 import com.flance.saas.tenant.domain.role.service.RoleAuthService;
 import com.flance.saas.tenant.domain.role.service.RoleMenuService;
 import com.flance.saas.tenant.domain.role.service.RoleService;
+import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
+import com.flance.saas.tenant.domain.tenant.service.TenantService;
 import com.flance.saas.tenant.domain.user.service.BaseUserService;
 import com.flance.saas.tenant.domain.user.service.UserRoleService;
 import com.google.common.collect.Lists;
@@ -19,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -42,6 +45,14 @@ public class BaseUserServiceImpl implements BaseUserService {
     @Resource
     private RoleAuthService roleAuthService;
 
+    @Resource
+    private TenantService tenantService;
+
+    @Override
+    public List<Tenant> getTenantUserTenants(String userId) {
+        return tenantService.getAppUserTenant(userId);
+    }
+
     @Override
     public void setUserMenu(IUser user, String userId, String tenantId) {
         user.setUserMenus(getUserMenu(userId, tenantId));
@@ -63,6 +74,7 @@ public class BaseUserServiceImpl implements BaseUserService {
         if (null == menuIds || menuIds.size() == 0) {
             return Lists.newArrayList();
         }
+        menuIds = menuIds.stream().distinct().collect(Collectors.toList());
         QueryWrapper<MenuEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.in(SaasConstant.DATA_ID_NAME, menuIds);
         queryWrapper.in(!StringUtils.isEmpty(tenantId), SaasConstant.HEADER_TENANT_ID, tenantId);
@@ -75,6 +87,7 @@ public class BaseUserServiceImpl implements BaseUserService {
         if (null == authIds || authIds.size() == 0) {
             return Lists.newArrayList();
         }
+        authIds = authIds.stream().distinct().collect(Collectors.toList());
         QueryWrapper<AuthEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.in(SaasConstant.DATA_ID_NAME, authIds);
         queryWrapper.in(!StringUtils.isEmpty(tenantId), SaasConstant.HEADER_TENANT_ID, tenantId);
@@ -87,6 +100,7 @@ public class BaseUserServiceImpl implements BaseUserService {
         if (null == roleIds || roleIds.size() == 0) {
             return Lists.newArrayList();
         }
+        roleIds = roleIds.stream().distinct().collect(Collectors.toList());
         QueryWrapper<RoleEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.in(SaasConstant.DATA_ID_NAME, roleIds);
         queryWrapper.in(!StringUtils.isEmpty(tenantId), SaasConstant.HEADER_TENANT_ID, tenantId);
