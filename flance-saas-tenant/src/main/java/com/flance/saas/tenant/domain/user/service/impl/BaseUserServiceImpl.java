@@ -49,7 +49,7 @@ public class BaseUserServiceImpl implements BaseUserService {
 
     @Override
     public void setUserAuth(IUser user, String userId, String tenantId) {
-
+        user.setUserAuths(getUserAuth(userId, tenantId));
     }
 
     @Override
