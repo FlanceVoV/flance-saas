@@ -6,6 +6,7 @@ import com.flance.saas.db.annotation.Column;
 import com.flance.saas.db.annotation.Index;
 import com.flance.saas.db.annotation.Table;
 import com.flance.saas.db.tables.common.BaseTable;
+import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.google.common.collect.Lists;
 import lombok.Data;
@@ -46,16 +47,13 @@ public class RoleEntity extends BaseTable {
     private String tenantId;
 
     @TableField(exist = false)
-    private List<String> auths;
+    private List<String> authConfigs;
+
+    @TableField(exist = false)
+    private List<AuthEntity> auths;
 
     @TableField(exist = false)
     private List<MenuEntity> menus;
 
-    public List<String> getAuths() {
-        List<String> auths = Lists.newArrayList();
-        if (null != authConfig) {
-            auths = Lists.newArrayList((authConfig.split(",")));
-        }
-        return auths;
-    }
+
 }

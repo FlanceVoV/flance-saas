@@ -28,7 +28,7 @@ public class TenantAppUser extends BaseTable {
     private String tenantId;
 
     @Column(notNull = true)
-    private String enabled;
+    private Integer enabled;
 
     @Column(notNull = true)
     private String menuConfig;

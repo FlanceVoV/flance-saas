@@ -1,13 +1,10 @@
 package com.flance.saas.tenant.domain.base;
 
 import cn.hutool.core.util.IdUtil;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.flance.jdbc.mybatis.common.IEntity;
-import com.flance.saas.common.core.SaasConstant;
 import com.flance.saas.db.utils.FieldUtils;
 import com.flance.web.utils.AssertException;
 import com.flance.web.utils.AssertUtil;
@@ -18,7 +15,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public abstract class BaseDomain<ID extends Serializable, T extends IEntity<ID>> implements IDomain<ID, T> {
 
@@ -49,6 +45,7 @@ public abstract class BaseDomain<ID extends Serializable, T extends IEntity<ID>>
         AssertUtil.notNull(t.getId(), AssertException.getNormal("唯一标识条件[id]不允许为空", "-1"));
         t.setStatus(0);
         t.setLastUpdateDate(new Date());
+        service.updateById(t);
         return t;
     }
 
@@ -100,7 +97,6 @@ public abstract class BaseDomain<ID extends Serializable, T extends IEntity<ID>>
      */
     public QueryWrapper<T> getWrapper(String ... args) {
         QueryWrapper<T> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq(SaasConstant.DATA_STATUS_FIELD_NAME, SaasConstant.DATA_STATUS_NORMAL);
         if (null == args || args.length == 0 || null == this.t) {
             return queryWrapper;
         }

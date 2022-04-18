@@ -1,7 +1,6 @@
 package com.flance.saas.tenant.domain.table.domain;
 
 import cn.hutool.core.util.IdUtil;
-import com.flance.saas.db.tables.common.BaseTable;
 import com.flance.saas.tenant.domain.base.BaseDomain;
 import com.flance.saas.tenant.domain.table.domain.entity.TableEntity;
 import com.flance.saas.tenant.domain.table.service.TableService;
@@ -25,10 +24,6 @@ public class TableDomain extends BaseDomain<String, TableEntity> {
         this.tableEntity = tableEntity;
         this.tableService = tableService;
         setInfo(tableEntity, tableService);
-    }
-
-    public void createTable(String schemaName, String suffix) {
-        tableService.createTable(tableEntity, schemaName, suffix);
     }
 
     @Override

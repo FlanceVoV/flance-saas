@@ -3,12 +3,16 @@ package com.flance.saas.db.tables.common;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.flance.jdbc.mybatis.common.IEntity;
 import com.flance.saas.db.annotation.Column;
 import com.flance.saas.db.annotation.Index;
 import com.flance.saas.db.annotation.Table;
 import com.flance.saas.db.tables.ITable;
 import com.flance.saas.db.utils.FieldUtils;
+import com.flance.saas.db.utils.SqlUtils;
+import com.flance.web.utils.AssertException;
+import com.flance.web.utils.AssertUtil;
 import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +45,7 @@ public abstract class BaseTable implements ITable, IEntity<String> {
     protected Date lastUpdateDate;
 
     @Column
+    @TableLogic
     protected Integer status;
 
     @TableField(exist = false)
@@ -51,6 +56,7 @@ public abstract class BaseTable implements ITable, IEntity<String> {
 
     @Override
     public void createTable(JdbcTemplate jdbcTemplate, String schema, String suffix) {
+        AssertUtil.mastTrue(SqlUtils.checkSchema(schema), AssertException.getNormal("schema名非法！[" + schema + "]", "-1"));
         String tableName = buildTable(schema, suffix);
         if (null == tableName) {
             return;

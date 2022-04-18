@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import java.util.List;
 
 /**
+ * 应用业务封装
  * 用户表空间
  * @author jhf
  */
@@ -31,7 +32,7 @@ public class SchemaEntity extends BaseTable {
     private String schemaUniqueCode;
 
     @Column(notNull = true)
-    private String tableConfig;
+    private String suffix;
 
     @TableField(exist = false)
     private List<TableEntity> tables;

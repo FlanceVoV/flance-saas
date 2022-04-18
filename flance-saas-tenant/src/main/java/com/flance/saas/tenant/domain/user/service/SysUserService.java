@@ -15,6 +15,4 @@ public interface SysUserService extends IService<SysUserEntity> {
 
     String encodePassword(String userAccount, String userPassword);
 
-    List<String> findRoleIds(String userId);
-
 }

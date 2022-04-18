@@ -24,7 +24,7 @@ public class TenantMerchantUser extends BaseTable {
     private String tenantId;
 
     @Column(notNull = true)
-    private String enabled;
+    private Integer enabled;
 
     @TableField(exist = false)
     private Tenant tenant;

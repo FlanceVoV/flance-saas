@@ -82,12 +82,6 @@ public class Tenant extends BaseTable {
     private String tenantSuffix;
 
     /**
-     * 租户表实例，开通的业务表
-     */
-    @Column(notNull = true, length = "4000")
-    private String openTables;
-
-    /**
      * 是否启用
      * 1.启用 0.禁用
      */
@@ -101,6 +95,12 @@ public class Tenant extends BaseTable {
     private Integer isOpen;
 
     /**
+     * 应用库
+     */
+    @Column(notNull = true)
+    private String schemaId;
+
+    /**
      * 租户所拥有的业务表实例
      */
     @TableField(exist = false)
@@ -112,33 +112,4 @@ public class Tenant extends BaseTable {
     @TableField(exist = false)
     private List<String> tableNames;
 
-    /**
-     * 获取业务表实例
-     */
-    public List<ITable> getTables() {
-        List<ITable> tables = Lists.newArrayList();
-        if (null != openTables) {
-            List<String> tableEntityNames = Lists.newArrayList(openTables.split(","));
-            tableEntityNames.forEach(entityName -> {
-                try {
-                    ITable table = (ITable) Class.forName(entityName).newInstance();
-                    tables.add(table);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            });
-        }
-        return tables;
-    }
-
-    /**
-     * 获取所有业务表
-     */
-    public List<String> getTableNames() {
-        List<String> tableNames = Lists.newArrayList();
-        if (null != openTables) {
-            tableNames = Lists.newArrayList(openTables.split(","));
-        }
-        return tableNames;
-    }
 }

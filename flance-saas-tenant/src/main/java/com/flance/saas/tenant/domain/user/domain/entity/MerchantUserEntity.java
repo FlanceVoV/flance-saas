@@ -5,10 +5,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.flance.saas.db.annotation.Column;
 import com.flance.saas.db.annotation.Table;
 import com.flance.saas.db.tables.common.BaseTable;
+import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
+import com.flance.saas.tenant.domain.base.IUser;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
 import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
-import com.flance.saas.tenant.domain.tenant.domain.entity.TenantMerchantUser;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,7 +24,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_flance_saas_merchant_user")
 @Table(tableName = "sys_flance_saas_merchant_user")
-public class MerchantUserEntity extends BaseTable {
+public class MerchantUserEntity extends BaseTable implements IUser {
 
     /**
      * 用户登录账户
@@ -90,4 +91,7 @@ public class MerchantUserEntity extends BaseTable {
 
     @TableField(exist = false)
     private List<RoleEntity> userRoles;
+
+    @TableField(exist = false)
+    private List<AuthEntity> userAuths;
 }

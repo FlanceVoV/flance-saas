@@ -6,6 +6,8 @@ import com.flance.saas.db.annotation.Column;
 import com.flance.saas.db.annotation.Index;
 import com.flance.saas.db.annotation.Table;
 import com.flance.saas.db.tables.common.BaseTable;
+import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
+import com.flance.saas.tenant.domain.base.IUser;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
 import lombok.Data;
@@ -26,7 +28,7 @@ import java.util.List;
         @Index(columns = {"user_name"}, indexName = "idx_user_name")
 })
 @TableName("sys_flance_saas_user")
-public class SysUserEntity extends BaseTable {
+public class SysUserEntity extends BaseTable implements IUser {
 
     /**
      * 登录名
@@ -57,6 +59,9 @@ public class SysUserEntity extends BaseTable {
 
     @TableField(exist = false)
     private List<RoleEntity> userRoles;
+
+    @TableField(exist = false)
+    private List<AuthEntity> userAuths;
 
 
 }

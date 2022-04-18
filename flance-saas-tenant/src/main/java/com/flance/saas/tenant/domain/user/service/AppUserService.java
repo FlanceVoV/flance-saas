@@ -23,6 +23,4 @@ public interface AppUserService extends IService<AppUserEntity> {
 
     String encodePassword(String userAccount, String userPassword);
 
-    List<String> findRoleIds(String userId, String tenantId);
-
 }

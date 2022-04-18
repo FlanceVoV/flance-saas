@@ -1,11 +1,10 @@
 package com.flance.saas.tenant.interfaces.tenant;
 
-import com.flance.saas.tenant.domain.table.domain.SchemaDomain;
-import com.flance.saas.tenant.domain.table.domain.entity.SchemaEntity;
 import com.flance.saas.tenant.domain.table.service.SchemaService;
-import com.flance.saas.tenant.domain.tenant.domain.TenantDomain;
 import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
 import com.flance.saas.tenant.domain.tenant.service.TenantService;
+import com.flance.saas.tenant.domain.vo.TenantRegisterRequest;
+import com.flance.saas.tenant.domain.vo.TenantRegisterResponse;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -41,37 +40,8 @@ public class TenantInterface {
     @Resource
     TenantService tenantService;
 
-    /**
-     * 创建表空间
-     * @param schemaEntity    实例
-     */
-    public void createTenantSchema(SchemaEntity schemaEntity) {
-        SchemaDomain schemaDomain = SchemaDomain.builder()
-                .schemaEntity(schemaEntity)
-                .schemaService(schemaService)
-                .build();
-        schemaDomain.createSchema();
-    }
-
-    /**
-     * 创建租户应用
-     * @param tenant    租户对象
-     */
-    public void createTenant(Tenant tenant) {
-        TenantDomain tenantDomain = TenantDomain.builder().tenantService(tenantService).tenant(tenant).build();
-        tenantDomain.create();
-    }
-
-    /**
-     * 根据主键获取租户
-     * @param id        主键
-     * @return          返回
-     */
-    public Tenant getById(String id) {
-        Tenant tenant = new Tenant();
-        tenant.setId(id);
-        TenantDomain tenantDomain = TenantDomain.builder().tenantService(tenantService).tenant(tenant).build();
-        return tenantDomain.get();
+    public TenantRegisterResponse register(TenantRegisterRequest request) {
+        return null;
     }
 
 

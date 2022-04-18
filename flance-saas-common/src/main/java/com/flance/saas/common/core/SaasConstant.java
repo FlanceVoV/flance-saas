@@ -19,6 +19,10 @@ public interface SaasConstant {
 
     String DATA_STATUS_FIELD_NAME = "status";
 
+    String DATA_ID_NAME = "id";
+
+    String DATA_TENANT_ID_NAME = "tenant_id";
+
     Integer DATA_STATUS_NORMAL = 1;
 
     Integer DATA_STATUS_DELETED = 0;
