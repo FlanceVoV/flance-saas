@@ -3,11 +3,12 @@ package com.flance.saas.tenant.domain.user.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.flance.saas.common.core.SaasConstant;
 import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
+import com.flance.saas.tenant.domain.auth.service.AuthorityService;
 import com.flance.saas.tenant.domain.base.IUser;
-import com.flance.saas.tenant.domain.menu.domain.MenuDomain;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.menu.service.MenuService;
 import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
+import com.flance.saas.tenant.domain.role.service.RoleAuthService;
 import com.flance.saas.tenant.domain.role.service.RoleMenuService;
 import com.flance.saas.tenant.domain.role.service.RoleService;
 import com.flance.saas.tenant.domain.user.service.BaseUserService;
@@ -30,10 +31,16 @@ public class BaseUserServiceImpl implements BaseUserService {
     private MenuService menuService;
 
     @Resource
+    private AuthorityService authorityService;
+
+    @Resource
     private UserRoleService userRoleService;
 
     @Resource
     private RoleMenuService roleMenuService;
+
+    @Resource
+    private RoleAuthService roleAuthService;
 
     @Override
     public void setUserMenu(IUser user, String userId, String tenantId) {
@@ -64,7 +71,14 @@ public class BaseUserServiceImpl implements BaseUserService {
 
     @Override
     public List<AuthEntity> getUserAuth(String userId, String tenantId) {
-        return null;
+        List<String> authIds = roleAuthService.findAuthIds(userRoleService.findRoleIds(userId, tenantId));
+        if (null == authIds || authIds.size() == 0) {
+            return Lists.newArrayList();
+        }
+        QueryWrapper<AuthEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in(SaasConstant.DATA_ID_NAME, authIds);
+        queryWrapper.in(!StringUtils.isEmpty(tenantId), SaasConstant.HEADER_TENANT_ID, tenantId);
+        return authorityService.list(queryWrapper);
     }
 
     @Override

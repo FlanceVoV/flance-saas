@@ -21,9 +21,12 @@ public class AuthEntity extends BaseTable {
     @Column(notNull = true, length = "64")
     private String authCode;
 
-    @Column(notNull = true)
-    private String authName;
-
     @Column(notNull = true, length = "64")
     private String  apiId;
+
+    @Column(notNull = true, length = "64")
+    private String tenantId;
+
+    @Column(notNull = true)
+    private String authName;
 }
