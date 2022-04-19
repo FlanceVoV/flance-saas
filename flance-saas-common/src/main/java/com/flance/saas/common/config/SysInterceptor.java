@@ -33,8 +33,8 @@ public class SysInterceptor implements HandlerInterceptor {
             redisUtils.setExp(key + ":" + token, 7200L);
             LoginUtil.putLogin(userInfo);
         }
-        if (authService.checkUserAuth(requestId)) {
-            return true;
+        if (!authService.checkUserAuth(requestId)) {
+            return false;
         }
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
