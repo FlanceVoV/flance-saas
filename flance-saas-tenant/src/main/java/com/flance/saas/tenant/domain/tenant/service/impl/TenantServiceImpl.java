@@ -51,4 +51,9 @@ public class TenantServiceImpl extends BaseService<String, TenantMapper, Tenant>
         tenantQueryWrapper.in(Tenant::getId, tenantIds);
         return list(tenantQueryWrapper);
     }
+
+    @Override
+    public Tenant register() {
+        return null;
+    }
 }

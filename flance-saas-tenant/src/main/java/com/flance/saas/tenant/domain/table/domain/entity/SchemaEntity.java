@@ -20,7 +20,8 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Table(tableName = "sys_flance_saas_schema", indexes = {
         @Index(columns = {"schema_name"}, indexName = "un_schema_name", indexType = Index.IndexType.UNIQUE),
-        @Index(columns = {"schema_unique_code"}, indexName = "idx_schema_unique_code", indexType = Index.IndexType.UNIQUE)
+        @Index(columns = {"schema_unique_code"}, indexName = "un_schema_unique_code", indexType = Index.IndexType.UNIQUE),
+        @Index(columns = {"tenant_id"}, indexName = "idx_tenant_id")
 })
 @TableName("sys_flance_saas_schema")
 public class SchemaEntity extends BaseTable {
@@ -29,10 +30,16 @@ public class SchemaEntity extends BaseTable {
     private String schemaName;
 
     @Column(notNull = true)
-    private String schemaUniqueCode;
+    private String schemaCNName;
 
     @Column(notNull = true)
-    private String suffix;
+    private String schemaDesc;
+
+    @Column(notNull = true)
+    private String schemaUniqueCode;
+
+    @TableField(exist = false)
+    private String tenantId;
 
     @TableField(exist = false)
     private List<TableEntity> tables;
