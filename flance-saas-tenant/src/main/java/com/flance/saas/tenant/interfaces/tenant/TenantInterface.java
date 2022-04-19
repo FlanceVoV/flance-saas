@@ -1,13 +1,26 @@
 package com.flance.saas.tenant.interfaces.tenant;
 
+import cn.hutool.core.util.IdUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.flance.saas.common.core.SaasConstant;
+import com.flance.saas.common.utils.LoginUtil;
+import com.flance.saas.tenant.domain.table.domain.entity.SchemaEntity;
 import com.flance.saas.tenant.domain.table.service.SchemaService;
+import com.flance.saas.tenant.domain.tenant.domain.entity.BusinessId;
 import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
+import com.flance.saas.tenant.domain.tenant.service.BusinessIdService;
 import com.flance.saas.tenant.domain.tenant.service.TenantService;
+import com.flance.saas.tenant.domain.user.domain.vo.LoginUser;
 import com.flance.saas.tenant.domain.vo.TenantRegisterRequest;
 import com.flance.saas.tenant.domain.vo.TenantRegisterResponse;
+import com.flance.web.utils.AssertException;
+import com.flance.web.utils.AssertUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import java.util.Date;
 
 /**
  * 业务流程
@@ -35,13 +48,38 @@ import javax.annotation.Resource;
 public class TenantInterface {
 
     @Resource
-    SchemaService schemaService;
-
-    @Resource
     TenantService tenantService;
 
-    public TenantRegisterResponse register(TenantRegisterRequest request) {
-        return null;
+    @Resource
+    BusinessIdService businessIdService;
+
+    public String createTenantId() {
+        String tenantId = businessIdService.getCurrentId(SaasConstant.BUSINESS_ID_TENANT_ID);
+        int number = Integer.parseInt(tenantId);
+        String result = String.format("%06d", number + 1);
+        LambdaQueryWrapper<BusinessId> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(BusinessId::getNumberId, SaasConstant.BUSINESS_ID_TENANT_ID);
+        BusinessId update = new BusinessId();
+        update.setNumberId(SaasConstant.BUSINESS_ID_TENANT_ID);
+        update.setBusinessId(result);
+        businessIdService.update(update, queryWrapper);
+        return result;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public TenantRegisterResponse register(@Valid TenantRegisterRequest request) {
+        LoginUser loginUser = LoginUtil.getLoginModel();
+        Tenant tenant = request.parseTenant();
+        tenant.setId(IdUtil.fastSimpleUUID());
+        tenant.setUserId(loginUser.getUserId());
+        tenant.setStatus(SaasConstant.DATA_STATUS_NORMAL);
+        tenant.setCreateDate(new Date());
+        tenant.setCreateUserId(loginUser.getUserId());
+        tenant.setTenantId(createTenantId());
+        tenantService.register(tenant);
+        return TenantRegisterResponse.builder()
+                .tenantId(tenant.getTenantId())
+                .build();
     }
 
 

@@ -27,4 +27,6 @@ public interface SaasConstant {
 
     Integer DATA_STATUS_DELETED = 0;
 
+    Integer BUSINESS_ID_TENANT_ID = 1;
+
 }

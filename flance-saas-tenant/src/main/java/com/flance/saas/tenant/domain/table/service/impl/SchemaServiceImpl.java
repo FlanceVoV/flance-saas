@@ -30,21 +30,22 @@ public class SchemaServiceImpl extends BaseService<String, SchemaMapper, SchemaE
 
 
     @Override
-    public SchemaEntity create(SchemaEntity schemaEntity) {
+    public SchemaEntity create(SchemaEntity schemaEntity, String tenantId) {
         AssertUtil.notNull(schemaEntity.getId(), AssertException.getNormal("database id is null", "-1"));
-        AssertUtil.notNull(schemaEntity.getTenantId(), AssertException.getNormal("tenant id is null", "-1"));
+        AssertUtil.notNull(tenantId, AssertException.getNormal("tenant id is null", "-1"));
 
         SchemaEntity found = getById(schemaEntity.getId());
         AssertUtil.notNull(found, AssertException.getNormal("非法请求，database[" + schemaEntity.getId() + "]不存在", "-1"));
 
         LambdaQueryWrapper<Tenant> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Tenant::getTenantId, schemaEntity.getTenantId());
+        queryWrapper.eq(Tenant::getTenantId, tenantId);
         Tenant tenantFound = tenantService.getOne(queryWrapper);
 
-        AssertUtil.notNull(found, AssertException.getNormal("非法请求，tenant[" + schemaEntity.getTenantId() + "]不存在", "-1"));
+        AssertUtil.notNull(found, AssertException.getNormal("非法请求，tenant[" + tenantId + "]不存在", "-1"));
         if (SqlUtils.checkSchema(found.getSchemaName())) {
-            jdbcTemplate.execute("create database if not exists " + schemaEntity.getSchemaName() + " default character set utf8mb4 collate utf8mb4_general_ci;");
-            tableService.createTables(found.getId(), found.getSchemaName() + "_" + tenantFound.getTenantId(), tenantFound.getTenantSuffix());
+            String tenantSchemaName = found.getSchemaName() + "_" + tenantFound.getTenantId();
+            jdbcTemplate.execute("create database if not exists " + tenantSchemaName + " default character set utf8mb4 collate utf8mb4_general_ci;");
+            tableService.createTables(found.getId(), tenantSchemaName, tenantFound.getTenantSuffix());
         } else {
             throw new RuntimeException("can not create database [" + schemaEntity.getSchemaName() + "]");
         }

@@ -32,9 +32,7 @@ public class TableServiceImpl extends BaseService<String, TableMapper, TableEnti
         AssertUtil.notNull(schemaId, AssertException.getNormal("非法请求，schemaId为空", "-1"));
         LambdaQueryWrapper<SchemaTableEntity> schemaTableQuery = new LambdaQueryWrapper<>();
         schemaTableQuery.eq(SchemaTableEntity::getSchemaId, schemaId);
-        List<SchemaTableEntity> list = schemaTableService.list(schemaTableQuery);
-        List<String> tableIds = Lists.newArrayList();
-        list.forEach(item -> tableIds.add(item.getTableId()));
+        List<String> tableIds = schemaTableService.findTableIds(schemaId);
         List<TableEntity> tables = listByIds(tableIds);
         tables.forEach(table -> createTable(table, schemaName, suffix));
     }

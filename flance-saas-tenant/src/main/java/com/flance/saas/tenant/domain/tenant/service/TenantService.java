@@ -11,6 +11,6 @@ public interface TenantService extends IService<Tenant> {
 
     List<Tenant> getMerchantUserTenant(String merchantUserId);
 
-    Tenant register();
+    void register(Tenant tenant);
 
 }

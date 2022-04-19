@@ -52,21 +52,21 @@ public class Tenant extends BaseTable {
     private String tenantDesc;
 
     /**
-     * 租户应用图标
+     * 租户应用图标，base64 or imgUrl
      */
-    @Column
+    @Column(length = "1000")
     private String tenantIcon;
 
     /**
-     * 租户公钥
+     * 租户密钥
      */
     @Column(notNull = true)
-    private String pubKey;
+    private String secretKey;
 
     /**
      * 租户域名
      */
-    @Column(notNull = true)
+    @Column
     private String domain;
 
     /**
@@ -78,7 +78,7 @@ public class Tenant extends BaseTable {
     /**
      * 租户后缀，用于区分表名后缀
      */
-    @Column(notNull = true)
+    @Column
     private String tenantSuffix;
 
     /**

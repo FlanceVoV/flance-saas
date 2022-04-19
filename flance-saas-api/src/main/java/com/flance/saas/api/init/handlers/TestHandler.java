@@ -39,7 +39,6 @@ public class TestHandler implements IHandler {
         tenant.setDomain("/test1");
         tenant.setTables(iTables);
         tenant.setUserId("system_01");
-        tenant.setPubKey("pubkey");
         tenant.setCreateDate(new Date());
         tenant.setCreateUserId("system_01");
         tenant.setStatus(0);
