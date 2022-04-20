@@ -40,4 +40,7 @@ public class SchemaEntity extends BaseTable {
     @TableField(exist = false)
     private List<TableEntity> tables;
 
+    @TableField(exist = false)
+    private List<String> apis;
+
 }

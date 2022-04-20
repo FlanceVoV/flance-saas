@@ -44,7 +44,7 @@ public class SysUserInterface {
                 .sysUserService(sysUserService)
                 .build();
         LoginUser loginUser = sysUserDomain.login();
-        loginUser.setUserType("sys");
+        loginUser.setUserType(SaasConstant.SYS_USER_TYPE_SYS);
         String userInfo = GsonUtils.toJSONString(loginUser);
         String key = RequestConstant.SYS_TOKEN_KEY + loginUser.getUserId();
         LoginUtil.loginSet(key, redisUtils);

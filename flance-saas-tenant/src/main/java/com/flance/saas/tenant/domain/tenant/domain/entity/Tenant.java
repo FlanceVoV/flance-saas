@@ -112,4 +112,10 @@ public class Tenant extends BaseTable {
     @TableField(exist = false)
     private List<String> tableNames;
 
+    /**
+     * 开通的接口
+     */
+    @TableField(exist = false)
+    private List<String> apis;
+
 }

@@ -29,4 +29,11 @@ public interface SaasConstant {
 
     Integer BUSINESS_ID_TENANT_ID = 1;
 
+    String SYS_USER_TYPE_MERCHANT = "merchant";
+
+    String SYS_USER_TYPE_APP = "app";
+
+    String SYS_USER_TYPE_SYS = "sys";
+
+
 }

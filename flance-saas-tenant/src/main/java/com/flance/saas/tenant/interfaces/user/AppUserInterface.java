@@ -46,7 +46,7 @@ public class AppUserInterface {
                 .appUserService(appUserService)
                 .build();
         LoginUser loginUser = appUserDomain.login();
-        loginUser.setUserType("app");
+        loginUser.setUserType(SaasConstant.SYS_USER_TYPE_APP);
         String userInfo = GsonUtils.toJSONString(loginUser);
         String key = RequestConstant.SYS_TOKEN_KEY + loginUser.getUserId();
         LoginUtil.loginSet(key, redisUtils);

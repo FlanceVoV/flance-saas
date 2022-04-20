@@ -30,7 +30,7 @@ public class SchemaServiceImpl extends BaseService<String, SchemaMapper, SchemaE
 
 
     @Override
-    public SchemaEntity create(SchemaEntity schemaEntity, String tenantId) {
+    public SchemaEntity createInstance(SchemaEntity schemaEntity, String tenantId) {
         AssertUtil.notNull(schemaEntity.getId(), AssertException.getNormal("database id is null", "-1"));
         AssertUtil.notNull(tenantId, AssertException.getNormal("tenant id is null", "-1"));
 

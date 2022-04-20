@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface SchemaService extends IService<SchemaEntity> {
 
-    SchemaEntity create(SchemaEntity schemaEntity, String tenantId);
+    SchemaEntity createInstance(SchemaEntity schemaEntity, String tenantId);
 
 }

@@ -45,7 +45,7 @@ public class MerchantUserInterface {
                 .merchantUserService(merchantUserService)
                 .build();
         LoginUser loginUser = merchantUserDomain.login();
-        loginUser.setUserType("merchant");
+        loginUser.setUserType(SaasConstant.SYS_USER_TYPE_MERCHANT);
         String userInfo = GsonUtils.toJSONString(loginUser);
         String key = RequestConstant.SYS_TOKEN_KEY + loginUser.getUserId();
         LoginUtil.loginSet(key, redisUtils);

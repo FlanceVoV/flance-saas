@@ -31,19 +31,11 @@ public class TenantServiceImpl extends BaseService<String, TenantMapper, Tenant>
     SchemaService schemaService;
 
     @Resource
-    SchemaTableService schemaTableService;
-
-    @Resource
-    TableService tableService;
-
-    @Resource
     TenantAppUserService tenantAppUserService;
 
     @Resource
     TenantMerchantUserService tenantMerchantUserService;
 
-    @Resource
-    JdbcTemplate jdbcTemplate;
 
     @Override
     public List<Tenant> getAppUserTenant(String appUserId) {
@@ -78,6 +70,6 @@ public class TenantServiceImpl extends BaseService<String, TenantMapper, Tenant>
         SchemaEntity schemaEntity = schemaService.getById(tenant.getSchemaId());
         AssertUtil.notNull(schemaEntity, AssertException.getNormal("非法请求！找不到schema[" + tenant.getSchemaId() + "]", "-1"));
         save(tenant);
-        schemaService.create(schemaEntity, tenant.getId());
+        schemaService.createInstance(schemaEntity, tenant.getId());
     }
 }
