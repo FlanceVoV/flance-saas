@@ -29,7 +29,7 @@ public class SchemaEntity extends BaseTable {
     private String schemaName;
 
     @Column(notNull = true)
-    private String schemaCNName;
+    private String schemaCnName;
 
     @Column(notNull = true)
     private String schemaDesc;
