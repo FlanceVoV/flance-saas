@@ -25,4 +25,6 @@ public interface MerchantUserService extends IService<MerchantUserEntity> {
 
     String encodePassword(String userAccount, String userPassword);
 
+    void setLastLoginIp(String userId);
+
 }

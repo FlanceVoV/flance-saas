@@ -4,6 +4,7 @@ import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
 
+import java.util.Date;
 import java.util.List;
 
 public interface IUser {
@@ -13,5 +14,9 @@ public interface IUser {
     void setUserAuths(List<AuthEntity> auths);
 
     void setUserMenus(List<MenuEntity> menus);
+
+    void setLastLoginIp(String ip);
+
+    void setLastLoginTime(Date time);
 }
 

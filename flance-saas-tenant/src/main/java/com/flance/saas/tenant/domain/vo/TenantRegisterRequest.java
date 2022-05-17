@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @Valid
@@ -59,6 +60,12 @@ public class TenantRegisterRequest {
      */
     @NotBlank
     private String schemaId;
+
+    /**
+     * 开通接口权益业务
+     */
+    @NotBlank
+    private List<String> rights;
 
     public Tenant parseTenant() {
         Tenant entity = new Tenant();

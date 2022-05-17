@@ -1,5 +1,6 @@
 package com.flance.saas.tenant.domain.user.service.impl;
 
+import cn.hutool.extra.servlet.ServletUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flance.jdbc.mybatis.service.BaseService;
 import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
@@ -10,16 +11,19 @@ import com.flance.saas.tenant.domain.role.service.RoleMenuService;
 import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
 import com.flance.saas.tenant.domain.tenant.service.TenantService;
 import com.flance.saas.tenant.domain.user.domain.entity.AppUserEntity;
+import com.flance.saas.tenant.domain.user.domain.entity.SysUserEntity;
 import com.flance.saas.tenant.domain.user.mapper.AppUserMapper;
 import com.flance.saas.tenant.domain.user.service.AppUserService;
 import com.flance.saas.tenant.domain.user.service.BaseUserService;
 import com.flance.saas.tenant.domain.user.service.UserRoleService;
 import com.flance.web.utils.AssertException;
 import com.flance.web.utils.AssertUtil;
+import com.flance.web.utils.RequestHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -71,6 +75,16 @@ public class AppUserServiceImpl extends BaseService<String, AppUserMapper, AppUs
     @Override
     public String encodePassword(String userAccount, String userPassword) {
         return passwordEncoder.encode(userAccount + userPassword);
+    }
+
+    @Override
+    public void setLastLoginIp(String userId) {
+        String clientIP = ServletUtil.getClientIP(RequestHolder.getRequest());
+        AppUserEntity waitUpdate = new AppUserEntity();
+        waitUpdate.setId(userId);
+        waitUpdate.setLastLoginIp(clientIP);
+        waitUpdate.setLastLoginTime(new Date());
+        this.updateById(waitUpdate);
     }
 
 

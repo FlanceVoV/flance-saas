@@ -1,10 +1,12 @@
 package com.flance.saas.tenant.domain.user.domain;
 
 import cn.hutool.core.util.IdUtil;
+import cn.hutool.extra.servlet.ServletUtil;
 import com.flance.saas.tenant.domain.base.BaseDomain;
 import com.flance.saas.tenant.domain.user.domain.entity.SysUserEntity;
 import com.flance.saas.tenant.domain.user.domain.vo.LoginUser;
 import com.flance.saas.tenant.domain.user.service.SysUserService;
+import com.flance.web.utils.RequestHolder;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -58,6 +60,7 @@ public class SysUserDomain extends BaseDomain<String, SysUserEntity> {
         sysUserService.setUserMenu(logon);
         sysUserService.setUserRole(logon);
         sysUserService.setUserAuth(logon);
+        sysUserService.setLastLoginIp(logon.getId());
         String token = IdUtil.fastSimpleUUID();
         return LoginUser.builder()
                 .userId(logon.getId())

@@ -26,4 +26,6 @@ public interface AppUserService extends IService<AppUserEntity> {
 
     String encodePassword(String userAccount, String userPassword);
 
+    void setLastLoginIp(String userId);
+
 }

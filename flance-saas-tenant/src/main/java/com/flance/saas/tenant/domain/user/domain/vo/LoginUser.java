@@ -37,6 +37,8 @@ public class LoginUser {
 
     private String roleConfig;
 
+    private String ip;
+
     private List<String> auths;
 
     private List<Tenant> userTenants;

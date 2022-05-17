@@ -1,5 +1,6 @@
 package com.flance.saas.tenant.domain.user.service.impl;
 
+import cn.hutool.extra.servlet.ServletUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flance.jdbc.mybatis.service.BaseService;
 import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
@@ -16,10 +17,12 @@ import com.flance.saas.tenant.domain.user.service.MerchantUserService;
 import com.flance.saas.tenant.domain.user.service.UserRoleService;
 import com.flance.web.utils.AssertException;
 import com.flance.web.utils.AssertUtil;
+import com.flance.web.utils.RequestHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -73,4 +76,13 @@ public class MerchantUserServiceImpl extends BaseService<String, MerchantUserMap
         return passwordEncoder.encode(userAccount + userPassword);
     }
 
+    @Override
+    public void setLastLoginIp(String userId) {
+        String clientIP = ServletUtil.getClientIP(RequestHolder.getRequest());
+        MerchantUserEntity waitUpdate = new MerchantUserEntity();
+        waitUpdate.setId(userId);
+        waitUpdate.setLastLoginIp(clientIP);
+        waitUpdate.setLastLoginTime(new Date());
+        this.updateById(waitUpdate);
+    }
 }

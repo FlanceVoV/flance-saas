@@ -13,6 +13,7 @@ import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -47,6 +48,18 @@ public class SysUserEntity extends BaseTable implements IUser {
      */
     @Column(notNull = true)
     private String userPhone;
+
+    /**
+     * 最后登录ip
+     */
+    @Column(notNull = true)
+    private String lastLoginIp;
+
+    /**
+     * 最后登录时间
+     */
+    @Column(notNull = true)
+    private Date lastLoginTime;
 
     /**
      * 密码

@@ -13,6 +13,7 @@ import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -79,6 +80,18 @@ public class MerchantUserEntity extends BaseTable implements IUser {
      */
     @Column(notNull = true)
     private Integer enabled;
+
+    /**
+     * 最后登录ip
+     */
+    @Column(notNull = true)
+    private String lastLoginIp;
+
+    /**
+     * 最后登录时间
+     */
+    @Column(notNull = true)
+    private Date lastLoginTime;
 
     /**
      * 商户应用
