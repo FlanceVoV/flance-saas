@@ -24,15 +24,17 @@ public @interface Column {
 
     boolean isPk() default false;
 
+    String defaultValue() default "NULL";
+
     enum ColumnType {
         VARCHAR(String.class, "varchar", "255"),
         INT(int.class, "int", "16"),
         DECIMAL(BigDecimal.class, "decimal", "16,2"),
         BIGINT(long.class, "bigint", "32"),
         DOUBLE(double.class, "double", "32"),
-        DATETIME(Date.class, "datetime", "6"),
-        TIMESTAMP(Timestamp.class, "timestamp", "14"),
-        LONGTEXT(String.class, "longtext", "4000"),
+        DATETIME(Date.class, "datetime", "-1"),
+        TIMESTAMP(Timestamp.class, "timestamp", "-1"),
+        LONGTEXT(String.class, "longtext", "-1"),
         AUTO(null, null, null)
         ;
 

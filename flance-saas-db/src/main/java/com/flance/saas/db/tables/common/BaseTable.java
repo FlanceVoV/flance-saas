@@ -115,6 +115,10 @@ public abstract class BaseTable implements ITable, IEntity<String> {
 
         // type
         String typeName = column.type().getTypeName();
+
+        // default
+        String defaultValue = column.defaultValue();
+
         // 自动映射默认属性
         if (column.type().equals(Column.ColumnType.AUTO)) {
             // 根据java字段类型获取mysql字段类型映射
@@ -131,7 +135,10 @@ public abstract class BaseTable implements ITable, IEntity<String> {
         if (column.notNull()) {
             return " `" + columnName + "` " + typeName + "(" + length + ") NOT NULL, ";
         }
-        return " `" + columnName + "` " + typeName + "(" + length + ") DEFAULT NULL, ";
+        if (column.length().equals("-1")) {
+            return " `" + columnName + "` " + typeName + " DEFAULT " + defaultValue + ", ";
+        }
+        return " `" + columnName + "` " + typeName + "(" + length + ") DEFAULT " + defaultValue + ", ";
     }
 
     private void buildIndex(List<String> indexes) {
