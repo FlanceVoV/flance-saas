@@ -133,10 +133,14 @@ public abstract class BaseTable implements ITable, IEntity<String> {
         }
 
         if (column.notNull()) {
-            if (column.length().equals("-1")) {
-                return " `" + columnName + "` " + typeName + " NOT NULL DEFAULT " + defaultValue + ", ";
+            String defaultV = " DEFAULT " + defaultValue ;
+            if (defaultValue.equals("NULL")) {
+                defaultV = "";
             }
-            return " `" + columnName + "` " + typeName + "(" + length + ") NOT NULL DEFAULT " + defaultValue + ", ";
+            if (column.length().equals("-1")) {
+                return " `" + columnName + "` " + typeName + " NOT NULL DEFAULT " + defaultV + ", ";
+            }
+            return " `" + columnName + "` " + typeName + "(" + length + ") NOT NULL DEFAULT " + defaultV + ", ";
         }
         if (column.length().equals("-1")) {
             return " `" + columnName + "` " + typeName + " DEFAULT " + defaultValue + ", ";
