@@ -138,7 +138,7 @@ public abstract class BaseTable implements ITable, IEntity<String> {
         if (column.length().equals("-1")) {
             return " `" + columnName + "` " + typeName + " DEFAULT " + defaultValue + ", ";
         }
-        return " `" + columnName + "` " + typeName + "LENGTH (" + length + ") DEFAULT " + defaultValue + ", ";
+        return " `" + columnName + "` " + typeName + " (" + length + ") DEFAULT " + defaultValue + ", ";
     }
 
     private void buildIndex(List<String> indexes) {
