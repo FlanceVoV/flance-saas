@@ -79,6 +79,9 @@ public class FieldUtils {
             return "255";
         }
         if (int.class.equals(fieldType) || Integer.class.equals(fieldType)) {
+            return "11";
+        }
+        if (long.class.equals(fieldType) || Long.class.equals(fieldType)) {
             return "16";
         }
         if (BigDecimal.class.equals(fieldType)) {
