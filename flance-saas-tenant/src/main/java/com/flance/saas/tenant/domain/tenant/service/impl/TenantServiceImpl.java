@@ -6,6 +6,7 @@ import com.flance.jdbc.mybatis.service.BaseService;
 import com.flance.saas.common.core.SaasConstant;
 import com.flance.saas.tenant.domain.table.domain.entity.SchemaEntity;
 import com.flance.saas.tenant.domain.table.domain.entity.TableEntity;
+import com.flance.saas.tenant.domain.table.service.SchemaFacadeService;
 import com.flance.saas.tenant.domain.table.service.SchemaService;
 import com.flance.saas.tenant.domain.table.service.SchemaTableService;
 import com.flance.saas.tenant.domain.table.service.TableService;
@@ -34,7 +35,7 @@ import java.util.Optional;
 public class TenantServiceImpl extends BaseService<String, TenantMapper, Tenant> implements TenantService {
 
     @Resource
-    SchemaService schemaService;
+    SchemaFacadeService schemaFacadeService;
 
     @Resource
     TenantAppUserService tenantAppUserService;
@@ -77,7 +78,7 @@ public class TenantServiceImpl extends BaseService<String, TenantMapper, Tenant>
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void register(Tenant tenant) {
-        SchemaEntity schemaEntity = schemaService.getById(tenant.getSchemaId());
+        SchemaEntity schemaEntity = schemaFacadeService.getSchemaById(tenant.getSchemaId());
         AssertUtil.notNull(schemaEntity, AssertException.getNormal("非法请求！找不到schema[" + tenant.getSchemaId() + "]", "-1"));
         save(tenant);
         List<TenantApiResources> apis = Lists.newArrayList();
@@ -90,7 +91,9 @@ public class TenantServiceImpl extends BaseService<String, TenantMapper, Tenant>
             api.setCreateUserId(tenant.getCreateUserId());
             apis.add(api);
         });
+        Tenant tenantFound = getById(tenant.getId());
+        AssertUtil.notNull(tenantFound, AssertException.getNormal("非法请求，tenant不存在", "-1"));
         tenantApiResourcesService.saveBatch(apis);
-        schemaService.createInstance(schemaEntity, tenant.getId());
+        schemaFacadeService.createInstance(schemaEntity, tenantFound);
     }
 }
