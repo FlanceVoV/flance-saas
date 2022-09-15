@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.flance</groupId>
-            <artifactId>flance-web-utils</artifactId>
+            <artifactId>flance-web-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
