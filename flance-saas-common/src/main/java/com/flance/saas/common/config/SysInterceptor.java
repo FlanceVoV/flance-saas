@@ -34,7 +34,7 @@ public class SysInterceptor implements HandlerInterceptor {
             LoginUtil.putLogin(userInfo);
         }
         if (!authService.checkUserAuth(requestId)) {
-            return false;
+            throw new RuntimeException("无访问权限！[" + requestId + "]");
         }
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
