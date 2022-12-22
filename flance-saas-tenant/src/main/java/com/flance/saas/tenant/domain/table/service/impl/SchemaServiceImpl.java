@@ -8,6 +8,7 @@ import com.flance.saas.tenant.domain.table.mapper.SchemaMapper;
 import com.flance.saas.tenant.domain.table.service.SchemaService;
 import com.flance.saas.tenant.domain.table.service.TableService;
 import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
+import com.flance.saas.tenant.domain.tenant.mapper.TenantMapper;
 import com.flance.saas.tenant.domain.tenant.service.TenantService;
 import com.flance.web.utils.AssertException;
 import com.flance.web.utils.AssertUtil;
@@ -26,7 +27,7 @@ public class SchemaServiceImpl extends BaseService<String, SchemaMapper, SchemaE
     private TableService tableService;
 
     @Resource
-    private TenantService tenantService;
+    private TenantMapper tenantMapper;
 
 
     @Override
@@ -39,7 +40,7 @@ public class SchemaServiceImpl extends BaseService<String, SchemaMapper, SchemaE
 
         LambdaQueryWrapper<Tenant> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Tenant::getTenantId, tenantId);
-        Tenant tenantFound = tenantService.getOne(queryWrapper);
+        Tenant tenantFound = tenantMapper.selectOne(queryWrapper);
 
         AssertUtil.notNull(found, AssertException.getNormal("非法请求，tenant[" + tenantId + "]不存在", "-1"));
         if (SqlUtils.checkSchema(found.getSchemaName())) {

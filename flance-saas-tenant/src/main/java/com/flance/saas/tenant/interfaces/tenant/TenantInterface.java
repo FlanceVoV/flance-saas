@@ -17,9 +17,9 @@ import com.flance.web.utils.AssertException;
 import com.flance.web.utils.AssertUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.util.Date;
 
 /**
@@ -67,7 +67,7 @@ public class TenantInterface {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public TenantRegisterResponse register(@Valid TenantRegisterRequest request) {
+    public TenantRegisterResponse register(@Validated TenantRegisterRequest request) {
         LoginUser loginUser = LoginUtil.getLoginModel();
         AssertUtil.mastTrue(SaasConstant.SYS_USER_TYPE_MERCHANT.equals(loginUser.getUserType()),
                 AssertException.getNormal("非法请求！只有商户用户才能注册租户应用", "-1"));
