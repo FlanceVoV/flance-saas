@@ -25,6 +25,9 @@ public class Init {
     @Value("${flance.saas.common.init}")
     Boolean initSysTable;
 
+    @Value("${flance.saas.open.requestIds}")
+    List<String> requestIds;
+
     @Resource
     TableInterface tableInterface;
 
@@ -35,6 +38,8 @@ public class Init {
         if (initSysTable) {
             tableInterface.initSysTable();
         }
+        log.info("初始化开放url--{}", requestIds);
+        requestIds.forEach(requestId -> redisUtils.add(SaasConstant.SYS_OPEN_URL + requestId, ""));
     }
 
 }

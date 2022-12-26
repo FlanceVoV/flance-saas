@@ -45,7 +45,7 @@ public abstract class BaseTable implements ITable, IEntity<String> {
     protected Date lastUpdateDate;
 
     @Column
-    @TableLogic
+    @TableLogic(value="1",delval="0")
     protected Integer status;
 
     @TableField(exist = false)

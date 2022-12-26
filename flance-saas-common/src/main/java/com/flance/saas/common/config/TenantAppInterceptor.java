@@ -41,7 +41,7 @@ public class TenantAppInterceptor implements HandlerInterceptor {
         String userInfo = redisUtils.get(key + ":" + token);
 
         // 租户表权限校验 tenant.getTables;
-        if (StringUtils.isEmpty(userInfo) || !authService.checkTenantAuth(tenantId)) {
+        if (!StringUtils.hasLength(userInfo) || !authService.checkTenantAuth(tenantId)) {
             return false;
         }
 

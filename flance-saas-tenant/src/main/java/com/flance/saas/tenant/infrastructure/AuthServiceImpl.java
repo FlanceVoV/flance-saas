@@ -23,7 +23,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean checkTenantAuth(String tenantId) {
         String userInfo = LoginUtil.getLoginModel();
-        if (StringUtils.isEmpty(userInfo)) {
+        if (!StringUtils.hasLength(userInfo)) {
             return false;
         }
         try {
