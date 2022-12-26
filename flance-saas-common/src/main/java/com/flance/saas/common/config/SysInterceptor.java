@@ -5,7 +5,9 @@ import com.flance.saas.common.utils.LogUtil;
 import com.flance.saas.common.utils.LoginUtil;
 import com.flance.web.utils.RedisUtils;
 import com.flance.web.utils.RequestConstant;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -13,6 +15,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@Slf4j
 @Component
 public class SysInterceptor implements HandlerInterceptor {
 
@@ -29,6 +32,11 @@ public class SysInterceptor implements HandlerInterceptor {
         String key = RequestConstant.SYS_TOKEN_KEY + userId;
         String userInfo = redisUtils.get(key + ":" + token);
         String requestId = request.getHeader(RequestConstant.HEADER_REQUEST_ID);
+        String uri = request.getRequestURI();
+        log.info("tenant sys interceptor token:[{}] userId:[{}] userInfo:[{}] requestId:[{}] requestUri:[{}]", token, userId, userInfo, requestId, uri);
+        if (!StringUtils.hasLength(requestId)) {
+            requestId = uri;
+        }
         if (null != userInfo) {
             redisUtils.setExp(key + ":" + token, 7200L);
             LoginUtil.putLogin(userInfo);
