@@ -77,7 +77,7 @@ public class BaseUserServiceImpl implements BaseUserService {
         menuIds = menuIds.stream().distinct().collect(Collectors.toList());
         QueryWrapper<MenuEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.in(SaasConstant.DATA_ID_NAME, menuIds);
-        queryWrapper.in(!StringUtils.isEmpty(tenantId), SaasConstant.HEADER_TENANT_ID, tenantId);
+        queryWrapper.in(!StringUtils.isEmpty(tenantId), SaasConstant.DATA_TENANT_ID_NAME, tenantId);
         return menuService.list(queryWrapper);
     }
 
@@ -90,7 +90,7 @@ public class BaseUserServiceImpl implements BaseUserService {
         authIds = authIds.stream().distinct().collect(Collectors.toList());
         QueryWrapper<AuthEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.in(SaasConstant.DATA_ID_NAME, authIds);
-        queryWrapper.in(!StringUtils.isEmpty(tenantId), SaasConstant.HEADER_TENANT_ID, tenantId);
+        queryWrapper.in(!StringUtils.isEmpty(tenantId), SaasConstant.DATA_TENANT_ID_NAME, tenantId);
         return authorityService.list(queryWrapper);
     }
 
