@@ -47,4 +47,9 @@ public interface ITable {
      */
     void createTable(JdbcTemplate jdbcTemplate, String schema, String suffix);
 
+    /**
+     * 新增字段
+     */
+    void addColumn(JdbcTemplate jdbcTemplate, String schema, String suffix);
+
 }

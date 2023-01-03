@@ -13,16 +13,22 @@ import com.flance.saas.db.utils.FieldUtils;
 import com.flance.saas.db.utils.SqlUtils;
 import com.flance.web.utils.AssertException;
 import com.flance.web.utils.AssertUtil;
+import com.flance.web.utils.GsonUtils;
 import com.google.common.collect.Lists;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.*;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
+import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
 
 @Slf4j
 @Data
@@ -54,6 +60,12 @@ public abstract class BaseTable implements ITable, IEntity<String> {
     @TableField(exist = false)
     private String pkColumn;
 
+    /**
+     * 是否开启字段根据实例映射新增db字段，仅支持mysql
+     */
+    @Value("${flance.saas.common.auto-add-columns:false}")
+    private Boolean autoAddColumns;
+
     @Override
     public void createTable(JdbcTemplate jdbcTemplate, String schema, String suffix) {
         AssertUtil.mastTrue(SqlUtils.checkSchema(schema), AssertException.getNormal("schema名非法！[" + schema + "]", "-1"));
@@ -61,15 +73,7 @@ public abstract class BaseTable implements ITable, IEntity<String> {
         if (null == tableName) {
             return;
         }
-        List<String> columnNames = Lists.newArrayList();
-        List<Field> fields = getFields();
-        for (Field field : fields) {
-            String column = buildColumn(field);
-            if (null == column) {
-                continue;
-            }
-            columnNames.add(column);
-        }
+        List<String> columnNames = getColumns();
         List<String> indexes = Lists.newArrayList();
         buildIndex(indexes);
 
@@ -77,6 +81,83 @@ public abstract class BaseTable implements ITable, IEntity<String> {
         log.info("表创建[{}]", sql);
         jdbcTemplate.execute(sql);
 
+        if (autoAddColumns) {
+            addColumn(jdbcTemplate, schema, suffix);
+        }
+    }
+
+    @Override
+    public void addColumn(JdbcTemplate jdbcTemplate, String schema, String suffix) {
+        AssertUtil.mastTrue(SqlUtils.checkSchema(schema), AssertException.getNormal("schema名非法！[" + schema + "]", "-1"));
+        String sql = "select COLUMN_NAME from information_schema.COLUMNS where table_name = ? and table_schema = ?;";
+
+        Table table = this.getClass().getAnnotation(Table.class);
+        if (null == table) {
+            return;
+        }
+        String schemaName = StringUtils.hasLength(schema) ? schema : "flance_elearning";
+        String tableName = StringUtils.hasLength(suffix) ? table.tableName() + "_" + suffix : table.tableName();
+        List<String> hasColumns = doQuery(jdbcTemplate, sql, new String[]{tableName, schemaName}, (rs) -> {
+            List<String> result = Lists.newArrayList();
+            try {
+                while (rs.next()) {
+                    result.add(rs.getString("COLUMN_NAME"));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return result;
+        }, Types.VARCHAR, Types.VARCHAR);
+        List<String> config = getColumnNames();
+        List<String> needAdd = Lists.newArrayList();
+        config.forEach(con -> {
+            if (!hasColumns.contains(con)) {
+                needAdd.add(con);
+            }
+        });
+        if (needAdd.size() > 0) {
+            log.info("检测到新增字段 [{}]", GsonUtils.toJSONString(needAdd));
+            List<String> buildColumns = getColumns(needAdd.toArray(new String[]{}));
+            buildColumns.forEach(alter -> {
+                alter = alter.substring(0, alter.lastIndexOf(","));
+                alter = " ALTER TABLE " + schemaName + "." + tableName + " ADD COLUMN " + alter + ";";
+                log.info("执行alter sql [{}]", alter);
+                jdbcTemplate.execute(alter);
+            });
+        }
+    }
+
+    private List<String> getColumnNames() {
+        List<String> columnNames = Lists.newArrayList();
+        List<Field> fields = getFields();
+        for (Field field : fields) {
+            Column column = field.getAnnotation(Column.class);
+            if (null == column) {
+                continue;
+            }
+            String columnName = column.columnName();
+            if ("".equals(columnName)) {
+                columnName = FieldUtils.humpToLine(field.getName());
+            }
+            columnNames.add(columnName);
+        }
+        return columnNames;
+    }
+
+    /**
+     * @param whiteList  列名白名单，如果有，则按照白名单配置，没有则全配置
+     */
+    private List<String> getColumns(String ... whiteList) {
+        List<String> columnNames = Lists.newArrayList();
+        List<Field> fields = getFields();
+        for (Field field : fields) {
+            String column = buildColumn(field, whiteList);
+            if (null == column) {
+                continue;
+            }
+            columnNames.add(column);
+        }
+        return columnNames;
     }
 
     private String buildTable(String schema, String suffix) {
@@ -98,7 +179,7 @@ public abstract class BaseTable implements ITable, IEntity<String> {
         return tableName;
     }
 
-    private String buildColumn(Field field) {
+    private String buildColumn(Field field, String ... whiteList) {
         // field_name
         Column column = field.getAnnotation(Column.class);
         if (null == column) {
@@ -110,6 +191,11 @@ public abstract class BaseTable implements ITable, IEntity<String> {
             columnName = FieldUtils.humpToLine(field.getName());
         }
 
+        if (whiteList.length > 0) {
+            if (!Lists.newArrayList(whiteList).contains(columnName)) {
+                return null;
+            }
+        }
         // length
         String length = column.length();
 
@@ -205,6 +291,11 @@ public abstract class BaseTable implements ITable, IEntity<String> {
 
     public String createId() {
         return UUID.randomUUID().toString().replaceAll("-", "").toUpperCase();
+    }
+
+    private <T> T doQuery(JdbcTemplate jdbcTemplate, String query, Object[] params, Function<ResultSet, T> function, int ... types) {
+        PreparedStatementCreatorFactory factory = new PreparedStatementCreatorFactory(query, types);
+        return jdbcTemplate.query(factory.newPreparedStatementCreator(params), function::apply);
     }
 
 }
