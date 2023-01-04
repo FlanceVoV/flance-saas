@@ -37,7 +37,7 @@ public class SqlInterceptorConfig {
                 return tableName;
             }
             TenantChooseModel tenantChooseModel = TenantChooseUtil.getTenantLoginModel();
-            AssertUtil.notNull(tenantChooseModel, AssertException.getNormal("系统异常，无法获取租户信息，[tenantChoose]不允许为空", "-1"));
+            AssertUtil.notNull(tenantChooseModel, AssertException.getNormal("系统异常，访问表[" + tableName + "]时无法获取租户信息，[tenantChoose]不允许为空", "-1"));
             String tableSchema = tenantChooseModel.getTenantSchema();
             String tableSuffix = tenantChooseModel.getTenantSuffix();
             String editTableName = tableName;

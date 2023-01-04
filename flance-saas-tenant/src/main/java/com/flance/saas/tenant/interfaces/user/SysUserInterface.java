@@ -53,6 +53,14 @@ public class SysUserInterface {
     }
 
     /**
+     * 登出
+     */
+    public void logout(String userId, String token) {
+        String key = RequestConstant.SYS_TOKEN_KEY + userId;
+        redisUtils.clear(key + ":" + token);
+    }
+
+    /**
      * 创建账户
      * @param sysUserEntity     用户实例
      */

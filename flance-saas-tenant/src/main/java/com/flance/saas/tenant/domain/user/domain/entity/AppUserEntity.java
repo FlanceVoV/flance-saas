@@ -84,13 +84,13 @@ public class AppUserEntity extends BaseTable implements IUser {
     /**
      * 最后登录ip
      */
-    @Column(notNull = true)
+    @Column
     private String lastLoginIp;
 
     /**
      * 最后登录时间
      */
-    @Column(notNull = true)
+    @Column
     private Date lastLoginTime;
 
     /**

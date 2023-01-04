@@ -6,12 +6,14 @@ import com.flance.saas.common.utils.LoginUtil;
 import com.flance.saas.tenant.domain.user.domain.vo.LoginUser;
 import com.flance.web.utils.GsonUtils;
 import com.flance.web.utils.RedisUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
 
+@Slf4j
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -21,7 +23,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean checkTenantAuth(String tenantId) {
         String userInfo = LoginUtil.getLoginModel();
-        if (StringUtils.isEmpty(userInfo)) {
+        if (!StringUtils.hasLength(userInfo)) {
             return false;
         }
         try {
@@ -36,16 +38,19 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean checkUserAuth(String requestId) {
         boolean openFlag = redisUtils.hasKey(SaasConstant.SYS_OPEN_URL + requestId);
+        log.info("tenant auth open requestId:[{}]", requestId);
         if (openFlag) {
             return true;
         }
         String userInfo = LoginUtil.getLoginModel();
-        if (StringUtils.isEmpty(userInfo)) {
+        log.info("tenant auth userInfo userInfo:[{}]", userInfo);
+        if (!StringUtils.hasLength(userInfo)) {
             return false;
         }
         try {
             LoginUser user = GsonUtils.fromString(userInfo, LoginUser.class);
             List<String> auths = user.getAuths();
+            log.info("tenant auth auth userInfo:[{}] auths:[{}]", userInfo, auths);
             return auths.contains(requestId);
         } catch (Exception e) {
             return false;

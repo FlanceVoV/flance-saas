@@ -8,6 +8,7 @@ import com.flance.saas.tenant.domain.user.mapper.UserRoleMapper;
 import com.flance.saas.tenant.domain.user.service.UserRoleService;
 import com.google.common.collect.Lists;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +20,7 @@ public class UserRoleServiceImpl extends BaseService<String, UserRoleMapper, Use
     public List<String> findRoleIds(String userId, String tenantId) {
         LambdaQueryWrapper<UserRoleEntity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserRoleEntity::getUserId, userId);
-        queryWrapper.eq(UserRoleEntity::getTenantId, tenantId);
+        queryWrapper.eq(StringUtils.hasLength(tenantId), UserRoleEntity::getTenantId, tenantId);
         List<UserRoleEntity> list = list(queryWrapper);
         List<String> roleIds = Lists.newArrayList();
         list.forEach(item -> roleIds.add(item.getRoleId()));
