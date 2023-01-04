@@ -60,12 +60,6 @@ public abstract class BaseTable implements ITable, IEntity<String> {
     @TableField(exist = false)
     private String pkColumn;
 
-    /**
-     * 是否开启字段根据实例映射新增db字段，仅支持mysql
-     */
-    @Value("${flance.saas.common.auto-add-columns:false}")
-    private Boolean autoAddColumns;
-
     @Override
     public void createTable(JdbcTemplate jdbcTemplate, String schema, String suffix) {
         AssertUtil.mastTrue(SqlUtils.checkSchema(schema), AssertException.getNormal("schema名非法！[" + schema + "]", "-1"));
@@ -81,7 +75,7 @@ public abstract class BaseTable implements ITable, IEntity<String> {
         log.info("表创建[{}]", sql);
         jdbcTemplate.execute(sql);
 
-        if (autoAddColumns) {
+        if (TableConfig.AUTO_ADD_COLUMNS) {
             addColumn(jdbcTemplate, schema, suffix);
         }
     }
