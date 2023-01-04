@@ -21,6 +21,6 @@ public class SchemaFacadeServiceImpl implements SchemaFacadeService {
 
     @Override
     public SchemaEntity createInstance(SchemaEntity schemaEntity, Tenant tenant) {
-        return schemaService.createInstance(schemaEntity, tenant);
+        return schemaService.createInstance(schemaEntity, tenant.getId());
     }
 }
