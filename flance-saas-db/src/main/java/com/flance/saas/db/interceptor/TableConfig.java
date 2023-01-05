@@ -1,9 +1,9 @@
-package com.flance.saas.db.tables.common;
+package com.flance.saas.db.interceptor;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 public class TableConfig {
 
     /**
@@ -12,8 +12,7 @@ public class TableConfig {
     public static Boolean AUTO_ADD_COLUMNS;
 
 
-
-    @Value("${flance.saas.common.auto-add-columns:false}")
+    @Value("${flance.saas.common.autoAddColumns:false}")
     public void setAutoAddColumns(Boolean autoAddColumns) {
         TableConfig.AUTO_ADD_COLUMNS = autoAddColumns;
     }

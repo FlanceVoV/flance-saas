@@ -8,6 +8,7 @@ import com.flance.jdbc.mybatis.common.IEntity;
 import com.flance.saas.db.annotation.Column;
 import com.flance.saas.db.annotation.Index;
 import com.flance.saas.db.annotation.Table;
+import com.flance.saas.db.interceptor.TableConfig;
 import com.flance.saas.db.tables.ITable;
 import com.flance.saas.db.utils.FieldUtils;
 import com.flance.saas.db.utils.SqlUtils;
@@ -60,7 +61,7 @@ public abstract class BaseTable implements ITable, IEntity<String> {
     private String pkColumn;
 
     @Override
-    public void createTable(JdbcTemplate jdbcTemplate, String schema, String suffix) {
+    public void createTable(JdbcTemplate jdbcTemplate, String schema, String suffix, Boolean autoAddColumns) {
         AssertUtil.mastTrue(SqlUtils.checkSchema(schema), AssertException.getNormal("schema名非法！[" + schema + "]", "-1"));
         String tableName = buildTable(schema, suffix);
         if (null == tableName) {
@@ -74,7 +75,8 @@ public abstract class BaseTable implements ITable, IEntity<String> {
         log.info("表创建[{}]", sql);
         jdbcTemplate.execute(sql);
 
-        if (TableConfig.AUTO_ADD_COLUMNS) {
+        log.info("是否开启字段添加alert字段[{}]", autoAddColumns);
+        if (autoAddColumns) {
             addColumn(jdbcTemplate, schema, suffix);
         }
     }
@@ -110,6 +112,7 @@ public abstract class BaseTable implements ITable, IEntity<String> {
         });
         if (needAdd.size() > 0) {
             log.info("检测到新增字段 [{}]", GsonUtils.toJSONString(needAdd));
+            log.info("开始新增字段 --------------------------- start");
             List<String> buildColumns = getColumns(needAdd.toArray(new String[]{}));
             buildColumns.forEach(alter -> {
                 alter = alter.substring(0, alter.lastIndexOf(","));
@@ -117,6 +120,7 @@ public abstract class BaseTable implements ITable, IEntity<String> {
                 log.info("执行alter sql [{}]", alter);
                 jdbcTemplate.execute(alter);
             });
+            log.info("结束新增字段 --------------------------- end");
         }
     }
 

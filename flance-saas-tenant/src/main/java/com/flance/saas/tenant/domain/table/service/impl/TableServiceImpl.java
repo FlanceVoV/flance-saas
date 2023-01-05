@@ -11,6 +11,7 @@ import com.flance.saas.tenant.domain.table.service.TableService;
 import com.flance.web.utils.AssertException;
 import com.flance.web.utils.AssertUtil;
 import com.google.common.collect.Lists;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,8 @@ public class TableServiceImpl extends BaseService<String, TableMapper, TableEnti
     @Resource
     private SchemaTableService schemaTableService;
 
+    @Value("${flance.saas.common.autoAddColumns:false}")
+    private Boolean autoAddColumns;
 
     @Override
     public void createTables(String schemaId, String schemaName, String suffix) {
@@ -41,7 +44,7 @@ public class TableServiceImpl extends BaseService<String, TableMapper, TableEnti
         try {
             Class<BaseTable> clazz = (Class<BaseTable>) Class.forName(tableEntity.getTableClassName());
             BaseTable baseTable = clazz.newInstance();
-            baseTable.createTable(jdbcTemplate, schemaName, suffix);
+            baseTable.createTable(jdbcTemplate, schemaName, suffix, autoAddColumns);
         } catch (ClassNotFoundException | ClassCastException | InstantiationException | IllegalAccessException e) {
             e.printStackTrace();
             AssertUtil.throwError(AssertException.getNormal("表生成失败", "-1"));
