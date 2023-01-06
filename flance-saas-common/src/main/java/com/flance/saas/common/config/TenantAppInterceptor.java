@@ -10,6 +10,7 @@ import com.flance.saas.common.utils.TenantChooseUtil;
 import com.flance.web.utils.GsonUtils;
 import com.flance.web.utils.RedisUtils;
 import com.flance.web.utils.RequestConstant;
+import com.flance.web.utils.exception.AuthException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -46,7 +47,7 @@ public class TenantAppInterceptor implements HandlerInterceptor {
         log.info("tenant tenant interceptor token:[{}] userId:[{}] userInfo:[{}] requestId:[{}] requestUri:[{}]", token, userId, userInfo, requestId, uri);
         // 租户表权限校验 tenant.getTables;
         if (!StringUtils.hasLength(userInfo) || !authService.checkTenantAuth(tenantId)) {
-            throw new RuntimeException("租户鉴权 无权限访问！");
+            throw AuthException.getNormal("租户鉴权 无权限访问！", "140003");
         }
 
         String tenantCache = redisUtils.get(SaasConstant.SYS_TENANT_KEY + tenantId);

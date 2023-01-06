@@ -5,6 +5,7 @@ import com.flance.saas.common.utils.LogUtil;
 import com.flance.saas.common.utils.LoginUtil;
 import com.flance.web.utils.RedisUtils;
 import com.flance.web.utils.RequestConstant;
+import com.flance.web.utils.exception.AuthException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -42,7 +43,7 @@ public class SysInterceptor implements HandlerInterceptor {
             LoginUtil.putLogin(userInfo);
         }
         if (!authService.checkUserAuth(requestId)) {
-            throw new RuntimeException("系统鉴权 无权限访问！");
+            throw AuthException.getNormal("系统鉴权 无权限访问！", "400003");
         }
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }

@@ -11,6 +11,7 @@ import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
 import com.flance.saas.tenant.domain.tenant.mapper.TenantMapper;
 import com.flance.web.utils.AssertException;
 import com.flance.web.utils.AssertUtil;
+import com.flance.web.utils.exception.BizException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +48,7 @@ public class SchemaServiceImpl extends BaseService<String, SchemaMapper, SchemaE
             jdbcTemplate.execute("create database if not exists " + tenantSchemaName + " default character set utf8mb4 collate utf8mb4_general_ci;");
             tableService.createTables(found.getId(), tenantSchemaName, tenantFound.getTenantSuffix());
         } else {
-            throw new RuntimeException("can not create database [" + schemaEntity.getSchemaName() + "]");
+            throw BizException.getNormal("can not create database [" + schemaEntity.getSchemaName() + "]", "-1");
         }
         return found;
     }

@@ -1,6 +1,7 @@
 package com.flance.saas.db.tables.common;
 
 import com.flance.saas.db.utils.SqlUtils;
+import com.flance.web.utils.exception.BizException;
 import lombok.Data;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -20,7 +21,7 @@ public class Schema {
         if (SqlUtils.checkSchema(schema)) {
             jdbcTemplate.execute("create database if not exists " + schema + " default character set utf8mb4 collate utf8mb4_general_ci;");
         } else {
-            throw new RuntimeException("can not create database [" + schema + "]");
+            throw BizException.getNormal("can not create database [" + schema + "]", "-1");
         }
     }
 
