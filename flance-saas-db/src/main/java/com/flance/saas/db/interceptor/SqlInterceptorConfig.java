@@ -9,6 +9,7 @@ import com.flance.saas.common.utils.TenantChooseUtil;
 import com.flance.web.utils.AssertException;
 import com.flance.web.utils.AssertUtil;
 import com.flance.web.utils.RedisUtils;
+import com.flance.web.utils.exception.BizException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,7 +38,7 @@ public class SqlInterceptorConfig {
                 return tableName;
             }
             TenantChooseModel tenantChooseModel = TenantChooseUtil.getTenantLoginModel();
-            AssertUtil.notNull(tenantChooseModel, AssertException.getNormal("系统异常，访问表[" + tableName + "]时无法获取租户信息，[tenantChoose]不允许为空", "-1"));
+            AssertUtil.notNull(tenantChooseModel, BizException.getNormal("系统异常，访问表[" + tableName + "]时无法获取租户信息，[tenantChoose]不允许为空", "-1"));
             String tableSchema = tenantChooseModel.getTenantSchema();
             String tableSuffix = tenantChooseModel.getTenantSuffix();
             String editTableName = tableName;
