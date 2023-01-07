@@ -58,6 +58,14 @@ public class LoginUser {
         return tenants;
     }
 
+    public List<String> getAuths() {
+        List<String> result = Lists.newArrayList();
+        if (null != userAuths) {
+            userAuths.forEach(auth -> result.add(auth.getApiCode()));
+        }
+        return result;
+    }
+
     public String getAuthConfig() {
         StringBuilder sb = new StringBuilder();
         if (null != userAuths) {

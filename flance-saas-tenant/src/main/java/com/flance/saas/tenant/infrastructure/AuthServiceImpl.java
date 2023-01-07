@@ -43,14 +43,14 @@ public class AuthServiceImpl implements AuthService {
             return true;
         }
         String userInfo = LoginUtil.getLoginModel();
-        log.info("tenant auth userInfo userInfo:[{}]", userInfo);
+        log.info("tenant auth userInfo userInfo str:[{}]", userInfo);
         if (!StringUtils.hasLength(userInfo)) {
             return false;
         }
         try {
             LoginUser user = GsonUtils.fromString(userInfo, LoginUser.class);
             List<String> auths = user.getAuths();
-            log.info("tenant auth auth userInfo:[{}] auths:[{}]", userInfo, auths);
+            log.info("tenant auth auth userInfo obj:[{}] auths:[{}]", userInfo, auths);
             return auths.contains(requestId);
         } catch (Exception e) {
             return false;

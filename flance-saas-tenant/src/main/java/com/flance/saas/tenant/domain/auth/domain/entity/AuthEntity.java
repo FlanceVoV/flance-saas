@@ -22,7 +22,10 @@ public class AuthEntity extends BaseTable {
     private String authCode;
 
     @Column(notNull = true, length = "64")
-    private String  apiId;
+    private String apiId;
+
+    @Column(notNull = true, length = "64")
+    private String apiCode;
 
     @Column(notNull = true, length = "64")
     private String tenantId;
