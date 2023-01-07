@@ -3,6 +3,7 @@ package com.flance.saas.tenant.domain.user.domain.entity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.flance.saas.db.annotation.Column;
+import com.flance.saas.db.annotation.Index;
 import com.flance.saas.db.annotation.Table;
 import com.flance.saas.db.tables.common.BaseTable;
 import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
@@ -24,7 +25,12 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_flance_saas_merchant_user")
-@Table(tableName = "sys_flance_saas_merchant_user")
+@Table(tableName = "sys_flance_saas_merchant_user", indexes = {
+        @Index(indexName = "udx_user_account", columns = {"user_account"}, indexType = Index.IndexType.UNIQUE),
+        @Index(indexName = "udx_open_id", columns = {"open_id"}, indexType = Index.IndexType.UNIQUE),
+        @Index(indexName = "udx_user_id_num", columns = {"user_id_num"}, indexType = Index.IndexType.UNIQUE),
+        @Index(indexName = "udx_user_mobile", columns = {"user_mobile"}, indexType = Index.IndexType.UNIQUE)
+})
 public class MerchantUserEntity extends BaseTable implements IUser {
 
     /**

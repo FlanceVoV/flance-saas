@@ -28,5 +28,8 @@ public class AuthEntity extends BaseTable {
     private String tenantId;
 
     @Column(notNull = true)
+    private String userType;
+
+    @Column(notNull = true)
     private String authName;
 }

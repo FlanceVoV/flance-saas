@@ -1,5 +1,6 @@
 package com.flance.saas.tenant.domain.user.domain.vo;
 
+import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
 import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
@@ -47,6 +48,8 @@ public class LoginUser {
 
     private List<RoleEntity> userRoles;
 
+    private List<AuthEntity> userAuths;
+
     public List<String> getTenants() {
         List<String> tenants = Lists.newArrayList();
         if (null != userTenants) {
@@ -56,24 +59,30 @@ public class LoginUser {
     }
 
     public String getAuthConfig() {
-        if (null != auths) {
-
+        StringBuilder sb = new StringBuilder();
+        if (null != userAuths) {
+            userAuths.forEach(auth -> sb.append(auth.getAuthCode()).append(","));
         }
-        return authConfig;
+        String result = sb.toString();
+        return result.length() > 0 ? result.substring(0, result.length() - 1) : null;
     }
 
     public String getRoleConfig() {
+        StringBuilder sb = new StringBuilder();
         if (null != userRoles) {
-
+            userRoles.forEach(role -> sb.append(role.getRoleCode()).append(","));
         }
-        return roleConfig;
+        String result = sb.toString();
+        return result.length() > 0 ? result.substring(0, result.length() - 1) : null;
     }
 
     public String getMenuConfig() {
+        StringBuilder sb = new StringBuilder();
         if (null != userMenus) {
-
+            userMenus.forEach(menu -> sb.append(menu.getMenuCode()).append(","));
         }
-        return menuConfig;
+        String result = sb.toString();
+        return result.length() > 0 ? result.substring(0, result.length() - 1) : null;
     }
 
 }

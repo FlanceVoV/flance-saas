@@ -65,5 +65,12 @@ public class MerchantUserInterface {
         return merchantUserService.getUserAuth(userId, tenantId);
     }
 
+    public void registerMerchantUser(MerchantUserEntity entity) {
+        MerchantUserDomain merchantUserDomain = MerchantUserDomain.builder()
+                .merchantUserEntity(entity)
+                .merchantUserService(merchantUserService)
+                .build();
+        merchantUserDomain.register();
+    }
 
 }

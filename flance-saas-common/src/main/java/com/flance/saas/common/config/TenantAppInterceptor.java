@@ -47,7 +47,7 @@ public class TenantAppInterceptor implements HandlerInterceptor {
         log.info("tenant tenant interceptor token:[{}] userId:[{}] userInfo:[{}] requestId:[{}] requestUri:[{}]", token, userId, userInfo, requestId, uri);
         // 租户表权限校验 tenant.getTables;
         if (!StringUtils.hasLength(userInfo) || !authService.checkTenantAuth(tenantId)) {
-            throw AuthException.getNormal("租户鉴权 无权限访问！", "140003");
+            throw new AuthException("租户鉴权 无权限访问！", "140003");
         }
 
         String tenantCache = redisUtils.get(SaasConstant.SYS_TENANT_KEY + tenantId);

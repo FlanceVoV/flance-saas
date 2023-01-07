@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(tableName = "sys_flance_saas_user_role", indexes = {
-        @Index(columns = {"user_id", "role_id", "tenant_id"}, indexName = "un_user_id", indexType = Index.IndexType.UNIQUE),
+        @Index(columns = {"user_id", "role_id", "tenant_id", "user_type"}, indexName = "un_user_id", indexType = Index.IndexType.UNIQUE),
 })
 @TableName("sys_flance_saas_user_role")
 public class UserRoleEntity extends BaseTable {
@@ -25,7 +25,7 @@ public class UserRoleEntity extends BaseTable {
     @Column(length = "64")
     private String userType;
 
-    @Column(notNull = true)
+    @Column(notNull = true, length = "64")
     private String tenantId;
 
 }

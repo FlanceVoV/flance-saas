@@ -48,7 +48,7 @@ public class SchemaServiceImpl extends BaseService<String, SchemaMapper, SchemaE
             jdbcTemplate.execute("create database if not exists " + tenantSchemaName + " default character set utf8mb4 collate utf8mb4_general_ci;");
             tableService.createTables(found.getId(), tenantSchemaName, tenantFound.getTenantSuffix());
         } else {
-            throw BizException.getNormal("can not create database [" + schemaEntity.getSchemaName() + "]", "-1");
+            throw new BizException("can not create database [" + schemaEntity.getSchemaName() + "]", "-1");
         }
         return found;
     }

@@ -3,6 +3,7 @@ package com.flance.saas.tenant.domain.user.service.impl;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flance.jdbc.mybatis.service.BaseService;
+import com.flance.saas.common.core.SaasConstant;
 import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.menu.service.MenuService;
@@ -59,17 +60,17 @@ public class AppUserServiceImpl extends BaseService<String, AppUserMapper, AppUs
 
     @Override
     public List<MenuEntity> getUserMenu(String userId, String tenantId) {
-        return baseUserService.getUserMenu(userId, tenantId);
+        return baseUserService.getUserMenu(userId, tenantId, SaasConstant.SYS_TENANT_ID_SYSTEM);
     }
 
     @Override
     public List<RoleEntity> getUserRole(String userId, String tenantId) {
-        return baseUserService.getUserRole(userId, tenantId);
+        return baseUserService.getUserRole(userId, tenantId, SaasConstant.SYS_TENANT_ID_SYSTEM);
     }
 
     @Override
     public List<AuthEntity> getUserAuth(String userId, String tenantId) {
-        return baseUserService.getUserAuth(userId, tenantId);
+        return baseUserService.getUserAuth(userId, tenantId, SaasConstant.SYS_TENANT_ID_SYSTEM);
     }
 
     @Override

@@ -54,54 +54,57 @@ public class BaseUserServiceImpl implements BaseUserService {
     }
 
     @Override
-    public void setUserMenu(IUser user, String userId, String tenantId) {
-        user.setUserMenus(getUserMenu(userId, tenantId));
+    public void setUserMenu(IUser user, String userId, String tenantId, String userType) {
+        user.setUserMenus(getUserMenu(userId, tenantId, userType));
     }
 
     @Override
-    public void setUserAuth(IUser user, String userId, String tenantId) {
-        user.setUserAuths(getUserAuth(userId, tenantId));
+    public void setUserAuth(IUser user, String userId, String tenantId, String userType) {
+        user.setUserAuths(getUserAuth(userId, tenantId, userType));
     }
 
     @Override
-    public void setUserRole(IUser user, String userId, String tenantId) {
-        user.setUserRoles(getUserRole(userId, tenantId));
+    public void setUserRole(IUser user, String userId, String tenantId, String userType) {
+        user.setUserRoles(getUserRole(userId, tenantId, userType));
     }
 
     @Override
-    public List<MenuEntity> getUserMenu(String userId, String tenantId) {
-        List<String> menuIds = roleMenuService.findMenuIds(userRoleService.findRoleIds(userId, tenantId));
+    public List<MenuEntity> getUserMenu(String userId, String tenantId, String userType) {
+        List<String> menuIds = roleMenuService.findMenuIds(userRoleService.findRoleIds(userId, tenantId, userType));
         if (null == menuIds || menuIds.size() == 0) {
             return Lists.newArrayList();
         }
         menuIds = menuIds.stream().distinct().collect(Collectors.toList());
         QueryWrapper<MenuEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(SaasConstant.DATA_USER_TYPE_NAME, userType);
         queryWrapper.in(SaasConstant.DATA_ID_NAME, menuIds);
         queryWrapper.in(!StringUtils.isEmpty(tenantId), SaasConstant.DATA_TENANT_ID_NAME, tenantId);
         return menuService.list(queryWrapper);
     }
 
     @Override
-    public List<AuthEntity> getUserAuth(String userId, String tenantId) {
-        List<String> authIds = roleAuthService.findAuthIds(userRoleService.findRoleIds(userId, tenantId));
+    public List<AuthEntity> getUserAuth(String userId, String tenantId, String userType) {
+        List<String> authIds = roleAuthService.findAuthIds(userRoleService.findRoleIds(userId, tenantId, userType));
         if (null == authIds || authIds.size() == 0) {
             return Lists.newArrayList();
         }
         authIds = authIds.stream().distinct().collect(Collectors.toList());
         QueryWrapper<AuthEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(SaasConstant.DATA_USER_TYPE_NAME, userType);
         queryWrapper.in(SaasConstant.DATA_ID_NAME, authIds);
         queryWrapper.in(!StringUtils.isEmpty(tenantId), SaasConstant.DATA_TENANT_ID_NAME, tenantId);
         return authorityService.list(queryWrapper);
     }
 
     @Override
-    public List<RoleEntity> getUserRole(String userId, String tenantId) {
-        List<String> roleIds = userRoleService.findRoleIds(userId, tenantId);
+    public List<RoleEntity> getUserRole(String userId, String tenantId, String userType) {
+        List<String> roleIds = userRoleService.findRoleIds(userId, tenantId, userType);
         if (null == roleIds || roleIds.size() == 0) {
             return Lists.newArrayList();
         }
         roleIds = roleIds.stream().distinct().collect(Collectors.toList());
         QueryWrapper<RoleEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(SaasConstant.DATA_USER_TYPE_NAME, userType);
         queryWrapper.in(SaasConstant.DATA_ID_NAME, roleIds);
         queryWrapper.in(!StringUtils.isEmpty(tenantId), SaasConstant.HEADER_TENANT_ID, tenantId);
         return roleService.list(queryWrapper);

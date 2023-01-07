@@ -72,7 +72,7 @@ public class TenantServiceImpl extends BaseService<String, TenantMapper, Tenant>
     private List<Tenant> getTenants(List<String> tenantIds) {
         LambdaQueryWrapper<Tenant> tenantQueryWrapper = new LambdaQueryWrapper<>();
         tenantQueryWrapper.in(Tenant::getId, tenantIds);
-        return list(tenantQueryWrapper);
+        return tenantIds != null && tenantIds.size() > 0 ? list(tenantQueryWrapper) : Lists.newArrayList();
     }
 
     @Override

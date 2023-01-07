@@ -21,7 +21,7 @@ public class Schema {
         if (SqlUtils.checkSchema(schema)) {
             jdbcTemplate.execute("create database if not exists " + schema + " default character set utf8mb4 collate utf8mb4_general_ci;");
         } else {
-            throw BizException.getNormal("can not create database [" + schema + "]", "-1");
+            throw new BizException("can not create database [" + schema + "]", "-1");
         }
     }
 

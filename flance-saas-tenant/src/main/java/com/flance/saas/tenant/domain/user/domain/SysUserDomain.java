@@ -69,6 +69,7 @@ public class SysUserDomain extends BaseDomain<String, SysUserEntity> {
                 .userAccount(logon.getUserAccount())
                 .userMenus(logon.getUserMenus())
                 .userRoles(logon.getUserRoles())
+                .userAuths(logon.getUserAuths())
                 .userPhone(logon.getUserPhone())
                 .build();
     }

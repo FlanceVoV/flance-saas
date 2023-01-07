@@ -3,6 +3,7 @@ package com.flance.saas.tenant.domain.user.service.impl;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flance.jdbc.mybatis.service.BaseService;
+import com.flance.saas.common.core.SaasConstant;
 import com.flance.saas.tenant.domain.user.domain.entity.MerchantUserEntity;
 import com.flance.saas.tenant.domain.user.domain.entity.SysUserEntity;
 import com.flance.saas.tenant.domain.user.mapper.SysUserMapper;
@@ -40,17 +41,17 @@ public class SysUserServiceImpl extends BaseService<String, SysUserMapper, SysUs
 
     @Override
     public void setUserMenu(SysUserEntity sysUserEntity) {
-        baseUserService.setUserMenu(sysUserEntity, sysUserEntity.getId(), null);
+        baseUserService.setUserMenu(sysUserEntity, sysUserEntity.getId(), SaasConstant.SYS_TENANT_ID_SYSTEM, SaasConstant.SYS_USER_TYPE_SYS);
     }
 
     @Override
     public void setUserRole(SysUserEntity sysUserEntity) {
-        baseUserService.setUserRole(sysUserEntity, sysUserEntity.getId(), null);
+        baseUserService.setUserRole(sysUserEntity, sysUserEntity.getId(), SaasConstant.SYS_TENANT_ID_SYSTEM, SaasConstant.SYS_USER_TYPE_SYS);
     }
 
     @Override
     public void setUserAuth(SysUserEntity sysUserEntity) {
-        baseUserService.setUserAuth(sysUserEntity, sysUserEntity.getId(), null);
+        baseUserService.setUserAuth(sysUserEntity, sysUserEntity.getId(), SaasConstant.SYS_TENANT_ID_SYSTEM, SaasConstant.SYS_USER_TYPE_SYS);
     }
 
     @Override

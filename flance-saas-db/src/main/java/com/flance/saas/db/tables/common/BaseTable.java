@@ -207,7 +207,9 @@ public abstract class BaseTable implements ITable, IEntity<String> {
             // 根据java字段类型获取mysql字段类型映射
             Column.ColumnType columnType = FieldUtils.getColumnType(field.getType());
             typeName = columnType.getTypeName();
-            length = FieldUtils.getLength(field.getType());
+            if (!StringUtils.hasLength(length) || length.equals("255")) {
+                length = FieldUtils.getLength(field.getType());
+            }
         }
 
         boolean isPk = column.isPk();

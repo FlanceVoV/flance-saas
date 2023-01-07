@@ -16,16 +16,16 @@ public interface BaseUserService {
 
     List<Tenant> getTenantUserTenants(String userId);
 
-    List<MenuEntity> getUserMenu(String userId, String tenantId);
+    List<MenuEntity> getUserMenu(String userId, String tenantId, String userType);
 
-    List<AuthEntity> getUserAuth(String userId, String tenantId);
+    List<AuthEntity> getUserAuth(String userId, String tenantId, String userType);
 
-    List<RoleEntity> getUserRole(String userId, String tenantId);
+    List<RoleEntity> getUserRole(String userId, String tenantId, String userType);
 
-    void setUserMenu(IUser user, String userId, String tenantId);
+    void setUserMenu(IUser user, String userId, String tenantId, String userType);
 
-    void setUserAuth(IUser user, String userId, String tenantId);
+    void setUserAuth(IUser user, String userId, String tenantId, String userType);
 
-    void setUserRole(IUser user, String userId, String tenantId);
+    void setUserRole(IUser user, String userId, String tenantId, String userType);
 
 }

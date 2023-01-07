@@ -58,6 +58,9 @@ public class MenuEntity extends BaseTable implements TreeModel<MenuEntity, Strin
     private String tenantId;
 
     @Column(notNull = true)
+    private String userType;
+
+    @Column(notNull = true)
     private Integer sort;
 
     @TableField(exist = false)

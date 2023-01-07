@@ -8,8 +8,7 @@ import java.util.List;
 
 public interface UserRoleService extends IService<UserRoleEntity> {
 
-    List<String> findRoleIds(String userId, String tenantId);
+    List<String> findRoleIds(String userId, String tenantId, String userType);
 
-    List<String> findRoleIds(String userId);
 
 }

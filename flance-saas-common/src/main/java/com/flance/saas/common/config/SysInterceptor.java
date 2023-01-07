@@ -43,7 +43,7 @@ public class SysInterceptor implements HandlerInterceptor {
             LoginUtil.putLogin(userInfo);
         }
         if (!authService.checkUserAuth(requestId)) {
-            throw AuthException.getNormal("系统鉴权 无权限访问！", "400003");
+            throw new AuthException("系统鉴权 无权限访问！", "400003");
         }
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }

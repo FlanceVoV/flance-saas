@@ -17,9 +17,10 @@ import java.util.stream.Collectors;
 public class UserRoleServiceImpl extends BaseService<String, UserRoleMapper, UserRoleEntity> implements UserRoleService {
 
     @Override
-    public List<String> findRoleIds(String userId, String tenantId) {
+    public List<String> findRoleIds(String userId, String tenantId, String userType) {
         LambdaQueryWrapper<UserRoleEntity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(UserRoleEntity::getUserId, userId);
+        queryWrapper.eq(UserRoleEntity::getUserType, userType);
         queryWrapper.eq(StringUtils.hasLength(tenantId), UserRoleEntity::getTenantId, tenantId);
         List<UserRoleEntity> list = list(queryWrapper);
         List<String> roleIds = Lists.newArrayList();
@@ -27,14 +28,4 @@ public class UserRoleServiceImpl extends BaseService<String, UserRoleMapper, Use
         return roleIds.stream().distinct().collect(Collectors.toList());
     }
 
-    @Override
-    public List<String> findRoleIds(String userId) {
-        LambdaQueryWrapper<UserRoleEntity> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(UserRoleEntity::getUserId, userId);
-        queryWrapper.eq(UserRoleEntity::getTenantId, SaasConstant.SYS_TENANT_ID_SYSTEM);
-        List<UserRoleEntity> list = list(queryWrapper);
-        List<String> roleIds = Lists.newArrayList();
-        list.forEach(item -> roleIds.add(item.getRoleId()));
-        return roleIds.stream().distinct().collect(Collectors.toList());
-    }
 }

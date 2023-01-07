@@ -23,6 +23,8 @@ public interface SaasConstant {
 
     String DATA_TENANT_ID_NAME = "tenant_id";
 
+    String DATA_USER_TYPE_NAME = "user_type";
+
     Integer DATA_STATUS_NORMAL = 1;
 
     Integer DATA_STATUS_DELETED = 0;
