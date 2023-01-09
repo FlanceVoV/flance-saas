@@ -4,6 +4,7 @@ import com.flance.saas.common.core.AuthService;
 import com.flance.saas.common.core.SaasConstant;
 import com.flance.saas.common.utils.LoginUtil;
 import com.flance.saas.tenant.domain.user.domain.vo.LoginUser;
+import com.flance.web.feign.FeignUser;
 import com.flance.web.utils.GsonUtils;
 import com.flance.web.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Resource
     RedisUtils redisUtils;
+
+    @Resource
+    FeignUser feignUser;
 
     @Override
     public boolean checkTenantAuth(String tenantId) {
@@ -55,5 +59,13 @@ public class AuthServiceImpl implements AuthService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public boolean checkFeign(String headerFeignName, String headerFeignPassword) {
+        if (null == headerFeignName || null == headerFeignPassword) {
+            return false;
+        }
+        return headerFeignName.equals(feignUser.getUser()) && headerFeignPassword.equals(feignUser.getPass());
     }
 }

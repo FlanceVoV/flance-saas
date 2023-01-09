@@ -6,4 +6,6 @@ public interface AuthService {
 
     boolean checkUserAuth(String requestId);
 
+    boolean checkFeign(String headerFeignName, String headerFeignPassword);
+
 }
