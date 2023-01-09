@@ -24,8 +24,12 @@ public class LoginUtil {
         ThreadLocalHelper.put(LOGIN_MODEL, loginUser);
     }
 
-    public static <T> T getLoginModel() {
+    public static String getLoginModel() {
         return ThreadLocalHelper.get(LOGIN_MODEL);
+    }
+
+    public static <T> T getLoginModel(Class<T> clazz) {
+        return GsonUtils.fromString(ThreadLocalHelper.get(LOGIN_MODEL), clazz);
     }
 
     public static void removeLogin() {

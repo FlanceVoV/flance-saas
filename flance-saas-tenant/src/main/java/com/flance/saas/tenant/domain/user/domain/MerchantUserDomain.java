@@ -1,11 +1,13 @@
 package com.flance.saas.tenant.domain.user.domain;
 
+import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flance.saas.tenant.domain.user.domain.entity.MerchantUserEntity;
 import com.flance.saas.tenant.domain.user.domain.vo.LoginUser;
 import com.flance.saas.tenant.domain.user.service.MerchantUserService;
 import com.flance.web.utils.exception.BizException;
+import com.flance.web.utils.exception.ParamException;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -32,6 +34,21 @@ public class MerchantUserDomain {
     }
 
     public void beforeRegisterCheck() {
+        if (null == merchantUserEntity.getUserMobile()) {
+            throw new ParamException("用户手机号不允许为空", "101001");
+        }
+        if (null == merchantUserEntity.getUserIdNum()) {
+            throw new ParamException("用户证件号不允许为空", "101002");
+        }
+        if (null == merchantUserEntity.getUserAccount()) {
+            throw new ParamException("用户账号不允许为空", "101003");
+        }
+        if (null == merchantUserEntity.getUserPassword()) {
+            throw new ParamException("用户密码不允许为空", "101004");
+        }
+        if (null == merchantUserEntity.getEnabled()) {
+            throw new ParamException("是否启用不允许为空", "101005");
+        }
         LambdaQueryWrapper<MerchantUserEntity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(MerchantUserEntity::getUserAccount, merchantUserEntity.getUserAccount());
         MerchantUserEntity found = merchantUserService.getOne(queryWrapper);
@@ -64,9 +81,9 @@ public class MerchantUserDomain {
     public void register() {
         beforeRegisterCheck();
         String encodePass = merchantUserService.encodePassword(merchantUserEntity.getUserAccount(), merchantUserEntity.getUserPassword());
+        merchantUserEntity.setInsert();
         merchantUserEntity.setUserPassword(encodePass);
         merchantUserService.save(merchantUserEntity);
     }
-
 
 }

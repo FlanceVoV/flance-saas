@@ -1,14 +1,16 @@
 package com.flance.saas.db.tables.common;
 
+import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.flance.jdbc.mybatis.common.IEntity;
+import com.flance.saas.common.utils.LoginUtil;
 import com.flance.saas.db.annotation.Column;
 import com.flance.saas.db.annotation.Index;
 import com.flance.saas.db.annotation.Table;
-import com.flance.saas.db.interceptor.TableConfig;
 import com.flance.saas.db.tables.ITable;
 import com.flance.saas.db.utils.FieldUtils;
 import com.flance.saas.db.utils.SqlUtils;
@@ -297,4 +299,27 @@ public abstract class BaseTable implements ITable, IEntity<String> {
         return jdbcTemplate.query(factory.newPreparedStatementCreator(params), function::apply);
     }
 
+    public void setInsert(Snowflake snowflake) {
+        LoginInfo loginInfo = LoginUtil.getLoginModel(LoginInfo.class);
+        this.setId(snowflake.nextIdStr());
+        this.setCreateUserId(loginInfo.getUserId());
+        this.setCreateDate(new Date());
+        this.setLastUpdateDate(new Date());
+        this.setStatus(1);
+    }
+
+    public void setInsert() {
+        LoginInfo loginInfo = LoginUtil.getLoginModel(LoginInfo.class);
+        this.setId(IdUtil.fastSimpleUUID());
+        this.setCreateUserId(loginInfo.getUserId());
+        this.setCreateDate(new Date());
+        this.setLastUpdateDate(new Date());
+        this.setStatus(1);
+    }
+
+    public void setUpdate() {
+        LoginInfo loginInfo = LoginUtil.getLoginModel(LoginInfo.class);
+        this.setLastUpdateDate(new Date());
+        this.setLastUpdateUserId(loginInfo.getUserId());
+    }
 }

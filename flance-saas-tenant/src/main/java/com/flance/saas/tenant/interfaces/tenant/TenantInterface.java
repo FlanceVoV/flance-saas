@@ -68,7 +68,7 @@ public class TenantInterface {
 
     @Transactional(rollbackFor = Exception.class)
     public TenantRegisterResponse register(@Validated TenantRegisterRequest request) {
-        LoginUser loginUser = LoginUtil.getLoginModel();
+        LoginUser loginUser = LoginUtil.getLoginModel(LoginUser.class);
         AssertUtil.mastTrue(SaasConstant.SYS_USER_TYPE_MERCHANT.equals(loginUser.getUserType()),
                 AssertException.getNormal("非法请求！只有商户用户才能注册租户应用", "-1"));
         Tenant tenant = request.parseTenant();

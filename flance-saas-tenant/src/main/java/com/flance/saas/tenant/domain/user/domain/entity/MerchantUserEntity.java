@@ -90,13 +90,13 @@ public class MerchantUserEntity extends BaseTable implements IUser {
     /**
      * 最后登录ip
      */
-    @Column(notNull = true)
+    @Column(length = "128")
     private String lastLoginIp;
 
     /**
      * 最后登录时间
      */
-    @Column(notNull = true)
+    @Column
     private Date lastLoginTime;
 
     /**
