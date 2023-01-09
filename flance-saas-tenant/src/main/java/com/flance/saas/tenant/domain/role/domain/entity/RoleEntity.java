@@ -46,7 +46,7 @@ public class RoleEntity extends BaseTable {
     @Column(notNull = true)
     private String tenantId;
 
-    @Column(notNull = true)
+    @Column(notNull = true, length = "64")
     private String userType;
 
     @TableField(exist = false)

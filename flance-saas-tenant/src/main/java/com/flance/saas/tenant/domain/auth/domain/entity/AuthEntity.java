@@ -30,7 +30,7 @@ public class AuthEntity extends BaseTable {
     @Column(notNull = true, length = "64")
     private String tenantId;
 
-    @Column(notNull = true)
+    @Column(notNull = true, length = "64")
     private String userType;
 
     @Column(notNull = true)
