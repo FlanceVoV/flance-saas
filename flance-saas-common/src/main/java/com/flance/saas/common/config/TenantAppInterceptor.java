@@ -39,8 +39,9 @@ public class TenantAppInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String token = request.getHeader(RequestConstant.HEADER_TOKEN);
         String userId = request.getHeader(RequestConstant.HEADER_USER_ID);
+        String userType = request.getHeader(RequestConstant.HEADER_USER_TYPE);
         String tenantId = request.getHeader(SaasConstant.HEADER_TENANT_ID);
-        String key = RequestConstant.SYS_TOKEN_KEY + userId;
+        String key = RequestConstant.SYS_TOKEN_KEY + userType + ":" + userId;
         String userInfo = redisUtils.get(key + ":" + token);
         String requestId = request.getHeader(RequestConstant.HEADER_REQUEST_ID);
         String uri = request.getRequestURI();

@@ -46,7 +46,7 @@ public class SysUserInterface {
         LoginUser loginUser = sysUserDomain.login();
         loginUser.setUserType(SaasConstant.SYS_USER_TYPE_SYS);
         String userInfo = GsonUtils.toJSONString(loginUser);
-        String key = RequestConstant.SYS_TOKEN_KEY + loginUser.getUserId();
+        String key = RequestConstant.SYS_TOKEN_KEY + SaasConstant.SYS_USER_TYPE_SYS + ":" + loginUser.getUserId();
         LoginUtil.loginSet(key, redisUtils);
         redisUtils.add(key + ":" + loginUser.getToken(), userInfo, SaasConstant.SAAS_USER_EXP_TIME);
         return loginUser;
@@ -56,7 +56,7 @@ public class SysUserInterface {
      * 登出
      */
     public void logout(String userId, String token) {
-        String key = RequestConstant.SYS_TOKEN_KEY + userId;
+        String key = RequestConstant.SYS_TOKEN_KEY + SaasConstant.SYS_USER_TYPE_SYS + ":" + userId;
         redisUtils.clear(key + ":" + token);
     }
 
