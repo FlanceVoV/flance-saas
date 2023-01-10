@@ -15,7 +15,7 @@ public class LoginUtil {
         Set<String> keys = redisUtils.keys(key + ":*");
         // 如果已存在，则直接将之前的登录状态置为失效，重新登录（顶号）
         if (keys.size() > 0) {
-            log.info("顶号登录，原token失效[{}]", GsonUtils.toJSONString(key));
+            log.info("顶号登录，原token失效[{}]", GsonUtils.toJSONString(keys));
             keys.forEach(redisUtils::clear);
         }
     }
