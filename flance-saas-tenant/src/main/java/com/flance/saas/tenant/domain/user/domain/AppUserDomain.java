@@ -33,6 +33,7 @@ public class AppUserDomain extends BaseDomain<String, AppUserEntity> {
         String token = IdUtil.fastSimpleUUID();
         appUserService.setLastLoginIp(logon.getId());
         return LoginUser.builder()
+                .userId(logon.getId())
                 .userTenants(appUserService.getAppUserTenants(logon.getId()))
                 .userAccount(logon.getUserAccount())
                 .token(token)
