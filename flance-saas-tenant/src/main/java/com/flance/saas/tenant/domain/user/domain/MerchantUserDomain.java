@@ -27,6 +27,7 @@ public class MerchantUserDomain {
         String token = IdUtil.fastSimpleUUID();
         merchantUserService.setLastLoginIp(logon.getId());
         return LoginUser.builder()
+                .userId(logon.getId())
                 .userAccount(logon.getUserAccount())
                 .userTenants(merchantUserService.getMerchantUserTenants(logon.getId()))
                 .token(token)
