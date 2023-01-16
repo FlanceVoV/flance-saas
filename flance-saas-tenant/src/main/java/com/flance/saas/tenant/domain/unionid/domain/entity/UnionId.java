@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_flance_union_id")
 @Table(tableName = "sys_flance_union_id", indexes = {
-        @Index(columns = {"biz_key"}, indexName = "idx_biz_key"),
+        @Index(columns = {"biz_key"}, indexType = Index.IndexType.UNIQUE, indexName = "udx_biz_key"),
         @Index(columns = {"biz_name"}, indexName = "idx_biz_name")
 })
 public class UnionId extends BaseTable {
