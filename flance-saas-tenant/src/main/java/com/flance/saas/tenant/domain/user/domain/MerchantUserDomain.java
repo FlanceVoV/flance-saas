@@ -51,6 +51,10 @@ public class MerchantUserDomain {
         if (null == merchantUserEntity.getEnabled()) {
             throw new ParamException("是否启用不允许为空", "101005");
         }
+        if (null == merchantUserEntity.getOpenId()) {
+            // 填充本系统生成的openId，所有对接以此openId确认唯一商户
+            merchantUserEntity.setOpenId(IdUtil.fastSimpleUUID());
+        }
         LambdaQueryWrapper<MerchantUserEntity> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(MerchantUserEntity::getUserAccount, merchantUserEntity.getUserAccount());
         MerchantUserEntity found = merchantUserService.getOne(queryWrapper);
