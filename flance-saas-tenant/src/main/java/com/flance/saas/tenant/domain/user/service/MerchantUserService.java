@@ -27,4 +27,6 @@ public interface MerchantUserService extends IService<MerchantUserEntity> {
 
     void setLastLoginIp(String userId);
 
+    String createIncId();
+
 }

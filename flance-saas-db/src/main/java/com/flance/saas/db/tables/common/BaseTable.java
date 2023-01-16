@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.flance.jdbc.mybatis.common.IEntity;
+import com.flance.saas.common.login.LoginInfo;
 import com.flance.saas.common.utils.LoginUtil;
 import com.flance.saas.db.annotation.Column;
 import com.flance.saas.db.annotation.Index;

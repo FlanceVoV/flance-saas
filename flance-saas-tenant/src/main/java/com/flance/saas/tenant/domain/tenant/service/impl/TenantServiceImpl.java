@@ -19,6 +19,7 @@ import com.flance.saas.tenant.domain.tenant.service.TenantApiResourcesService;
 import com.flance.saas.tenant.domain.tenant.service.TenantAppUserService;
 import com.flance.saas.tenant.domain.tenant.service.TenantMerchantUserService;
 import com.flance.saas.tenant.domain.tenant.service.TenantService;
+import com.flance.saas.tenant.infrastructure.UnionIdCreator;
 import com.flance.web.utils.AssertException;
 import com.flance.web.utils.AssertUtil;
 import com.google.common.collect.Lists;
@@ -45,6 +46,9 @@ public class TenantServiceImpl extends BaseService<String, TenantMapper, Tenant>
 
     @Resource
     TenantApiResourcesService tenantApiResourcesService;
+
+    @Resource
+    UnionIdCreator unionIdCreator;
 
 
     @Override
@@ -80,6 +84,7 @@ public class TenantServiceImpl extends BaseService<String, TenantMapper, Tenant>
     public void register(Tenant tenant) {
         SchemaEntity schemaEntity = schemaFacadeService.getSchemaById(tenant.getSchemaId());
         AssertUtil.notNull(schemaEntity, AssertException.getNormal("非法请求！找不到schema[" + tenant.getSchemaId() + "]", "-1"));
+        tenant.setId(unionIdCreator.creatMerchantId());
         save(tenant);
         List<TenantApiResources> apis = Lists.newArrayList();
         Optional.ofNullable(tenant.getApis()).orElse(Lists.newArrayList()).forEach(apiId -> {

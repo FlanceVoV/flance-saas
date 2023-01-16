@@ -1,4 +1,4 @@
-package com.flance.saas.db.tables.common;
+package com.flance.saas.common.login;
 
 import lombok.Data;
 

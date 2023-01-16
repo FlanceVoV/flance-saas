@@ -3,6 +3,7 @@ package com.flance.saas.tenant.domain.user.domain;
 import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.flance.saas.common.utils.AppIdUtil;
 import com.flance.saas.tenant.domain.user.domain.entity.MerchantUserEntity;
 import com.flance.saas.tenant.domain.user.domain.vo.LoginUser;
 import com.flance.saas.tenant.domain.user.service.MerchantUserService;
@@ -83,6 +84,7 @@ public class MerchantUserDomain {
         beforeRegisterCheck();
         String encodePass = merchantUserService.encodePassword(merchantUserEntity.getUserAccount(), merchantUserEntity.getUserPassword());
         merchantUserEntity.setInsert();
+        merchantUserEntity.setId(AppIdUtil.getRegisterMerchantUserId(merchantUserService.createIncId()));
         merchantUserEntity.setUserPassword(encodePass);
         merchantUserService.save(merchantUserEntity);
     }

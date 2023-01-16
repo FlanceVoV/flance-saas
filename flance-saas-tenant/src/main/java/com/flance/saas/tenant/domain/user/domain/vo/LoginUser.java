@@ -1,6 +1,5 @@
 package com.flance.saas.tenant.domain.user.domain.vo;
 
-import com.flance.saas.db.tables.common.LoginInfo;
 import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
 import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
@@ -8,7 +7,6 @@ import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
 import com.google.common.collect.Lists;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 

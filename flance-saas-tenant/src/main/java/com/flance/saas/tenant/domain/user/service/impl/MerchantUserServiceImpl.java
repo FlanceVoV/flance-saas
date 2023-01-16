@@ -6,16 +6,13 @@ import com.flance.jdbc.mybatis.service.BaseService;
 import com.flance.saas.common.core.SaasConstant;
 import com.flance.saas.tenant.domain.auth.domain.entity.AuthEntity;
 import com.flance.saas.tenant.domain.menu.domain.entity.MenuEntity;
-import com.flance.saas.tenant.domain.menu.service.MenuService;
 import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
-import com.flance.saas.tenant.domain.role.service.RoleMenuService;
 import com.flance.saas.tenant.domain.tenant.domain.entity.Tenant;
-import com.flance.saas.tenant.domain.tenant.service.TenantService;
 import com.flance.saas.tenant.domain.user.domain.entity.MerchantUserEntity;
 import com.flance.saas.tenant.domain.user.mapper.MerchantUserMapper;
 import com.flance.saas.tenant.domain.user.service.BaseUserService;
 import com.flance.saas.tenant.domain.user.service.MerchantUserService;
-import com.flance.saas.tenant.domain.user.service.UserRoleService;
+import com.flance.saas.tenant.infrastructure.UnionIdCreator;
 import com.flance.web.utils.AssertException;
 import com.flance.web.utils.AssertUtil;
 import com.flance.web.utils.RequestHolder;
@@ -34,6 +31,9 @@ public class MerchantUserServiceImpl extends BaseService<String, MerchantUserMap
 
     @Resource
     private BaseUserService baseUserService;
+
+    @Resource
+    private UnionIdCreator unionIdCreator;
 
     @Override
     public MerchantUserEntity loginForOpenId(String openId) {
@@ -75,6 +75,11 @@ public class MerchantUserServiceImpl extends BaseService<String, MerchantUserMap
     @Override
     public String encodePassword(String userAccount, String userPassword) {
         return passwordEncoder.encode(userAccount + userPassword);
+    }
+
+    @Override
+    public String createIncId() {
+        return unionIdCreator.creatMerchantUserId();
     }
 
     @Override

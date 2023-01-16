@@ -3,6 +3,7 @@ package com.flance.saas.tenant.interfaces.tenant;
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.flance.saas.common.core.SaasConstant;
+import com.flance.saas.common.login.LoginInfo;
 import com.flance.saas.common.utils.LoginUtil;
 import com.flance.saas.tenant.domain.table.domain.entity.SchemaEntity;
 import com.flance.saas.tenant.domain.table.service.SchemaService;
@@ -68,11 +69,10 @@ public class TenantInterface {
 
     @Transactional(rollbackFor = Exception.class)
     public TenantRegisterResponse register(@Validated TenantRegisterRequest request) {
-        LoginUser loginUser = LoginUtil.getLoginModel(LoginUser.class);
+        LoginInfo loginUser = LoginUtil.getLoginModel(LoginInfo.class);
         AssertUtil.mastTrue(SaasConstant.SYS_USER_TYPE_MERCHANT.equals(loginUser.getUserType()),
                 AssertException.getNormal("非法请求！只有商户用户才能注册租户应用", "-1"));
         Tenant tenant = request.parseTenant();
-        tenant.setId(IdUtil.fastSimpleUUID());
         tenant.setUserId(loginUser.getUserId());
         tenant.setStatus(SaasConstant.DATA_STATUS_NORMAL);
         tenant.setCreateDate(new Date());

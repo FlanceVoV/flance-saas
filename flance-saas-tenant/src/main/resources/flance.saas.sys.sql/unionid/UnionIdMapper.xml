@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flance.saas.tenant.domain.unionid.mapper.UnionIdMapper">
+
+    <select id="selectIncNumForUpdate" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select biz_inc_num from sys_flance_union_id where biz_key = #{bizKey, jdbcType=VARCHAR} for update
+    </select>
+
+    <update id="incNumByBizKey" parameterType="java.lang.String">
+        update sys_flance_union_id set biz_inc_num = biz_inc_num + 1 where biz_key = #{bizKey, jdbcType=VARCHAR}
+    </update>
+
+</mapper>
