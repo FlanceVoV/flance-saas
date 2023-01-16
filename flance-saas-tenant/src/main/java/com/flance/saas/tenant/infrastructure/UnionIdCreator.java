@@ -15,6 +15,8 @@ public class UnionIdCreator {
 
     private final static String MERCHANT_USER_KEY = "merchant-user";
 
+    private final static String TENANT_KEY = "tenant";
+
     public String creatMerchantId() {
         Integer incNum = unionIdService.createUnionIdByKey(MERCHANT_KEY);
         return incNum + "";
@@ -22,6 +24,11 @@ public class UnionIdCreator {
 
     public String creatMerchantUserId() {
         Integer incNum = unionIdService.createUnionIdByKey(MERCHANT_USER_KEY);
+        return incNum + "";
+    }
+
+    public String creatTenant() {
+        Integer incNum = unionIdService.createUnionIdByKey(TENANT_KEY);
         return incNum + "";
     }
 

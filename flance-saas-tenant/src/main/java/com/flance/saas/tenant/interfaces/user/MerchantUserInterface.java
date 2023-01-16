@@ -7,11 +7,13 @@ import com.flance.saas.tenant.domain.role.domain.entity.RoleEntity;
 import com.flance.saas.tenant.domain.user.domain.MerchantUserDomain;
 import com.flance.saas.tenant.domain.user.domain.entity.MerchantUserEntity;
 import com.flance.saas.tenant.domain.user.domain.vo.LoginUser;
+import com.flance.saas.tenant.domain.user.domain.vo.MerchantUserRegisterRsp;
 import com.flance.saas.tenant.domain.user.service.MerchantUserService;
 import com.flance.saas.common.core.SaasConstant;
 import com.flance.web.utils.GsonUtils;
 import com.flance.web.utils.RedisUtils;
 import com.flance.web.utils.RequestConstant;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -65,12 +67,16 @@ public class MerchantUserInterface {
         return merchantUserService.getUserAuth(userId, tenantId);
     }
 
-    public void registerMerchantUser(MerchantUserEntity entity) {
+    public MerchantUserRegisterRsp registerMerchantUser(MerchantUserEntity entity) {
         MerchantUserDomain merchantUserDomain = MerchantUserDomain.builder()
                 .merchantUserEntity(entity)
                 .merchantUserService(merchantUserService)
                 .build();
         merchantUserDomain.register();
+        MerchantUserRegisterRsp rsp = new MerchantUserRegisterRsp();
+        BeanUtils.copyProperties(entity, rsp);
+        rsp.setMerchantId(entity.getId());
+        return rsp;
     }
 
 }
