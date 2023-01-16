@@ -7,7 +7,7 @@
     </select>
 
     <update id="incNumByBizKey" parameterType="java.lang.String">
-        update sys_flance_union_id set biz_inc_num = biz_inc_num + 1 where biz_key = #{bizKey, jdbcType=VARCHAR}
+        update sys_flance_union_id set biz_inc_num = biz_inc_num + 1 where biz_inc_num = biz_inc_num and biz_key = #{bizKey, jdbcType=VARCHAR}
     </update>
 
 </mapper>
