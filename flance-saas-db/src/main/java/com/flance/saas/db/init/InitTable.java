@@ -21,12 +21,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class InitTable {
 
-    public static void initSysTable(JdbcTemplate jdbcTemplate, Boolean autoAddColumns, String ... scans) {
+    public static void initSysTable(JdbcTemplate jdbcTemplate, String schema, Boolean autoAddColumns, String ... scans) {
         Set<Class<BaseTable>> classes = ClassUtils.getInstances(BaseTable.class, scans);
         classes.forEach(clazz -> {
             try {
                 BaseTable baseTable = clazz.newInstance();
-                baseTable.createTable(jdbcTemplate, "", "", autoAddColumns);
+                baseTable.createTable(jdbcTemplate, schema, "", autoAddColumns);
             } catch (Exception e) {
                 e.printStackTrace();
             }

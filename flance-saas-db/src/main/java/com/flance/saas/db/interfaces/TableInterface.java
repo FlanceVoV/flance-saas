@@ -17,11 +17,11 @@ public class TableInterface {
     private Boolean autoAddColumns;
 
     public void initSysTable() {
-        InitTable.initSysTable(jdbcTemplate, autoAddColumns, "com.flance.saas");
+        InitTable.initSysTable(jdbcTemplate, "", autoAddColumns, "com.flance.saas");
     }
 
     public void initSelfTable(String ... scans) {
-        InitTable.initSysTable(jdbcTemplate, autoAddColumns, scans);
+        InitTable.initSysTable(jdbcTemplate, "", autoAddColumns, scans);
     }
 
 }
